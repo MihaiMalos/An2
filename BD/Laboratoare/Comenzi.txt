@@ -1,0 +1,36 @@
+Database Commands
+_________________
+
+Create database:
+# create database DATABASE_NAME;
+
+Connect to database:
+# \connect DATABASE_NAME
+
+Display all relations of a database:
+# \d
+It contains: view, table, sequence
+
+Display all columns of a table:
+# \d TABLE_NAME
+
+Dispay tables of a database:
+# \dt
+
+Select all elements from a table:
+# select * from TABLE_NAME;
+
+
+
+
+Backup
+______
+
+Commands executed in bin folder of postgresql:
+* C:\Program Files\PostgreSQL\15\bin
+
+Create backup:
+* pg_dump nume_bd >C:\...\backup.sql
+
+Restore backup:
+* psql nume_bd <C:\...\backup.sql 

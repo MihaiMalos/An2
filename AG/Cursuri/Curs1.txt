@@ -1,0 +1,51 @@
+Mentiuni autor:
+- in parantezele rotunde sunt notatii matematice, utilizand litere din lipsa de simboluri
+
+Evaluare AG
+___________
+
+Laborator 50% din nota finala, trebuie sa fie de trecere.
+Examenul scris consta in:
+   * 2-3 subiecte teoretice de genul: de demonstrat ca algoritmul X e eficient, complexitate de dedus
+  SAU
+   * sa se prezinte pseudocodul unui algoritm, complexitatea de dedus + ceva cu iteratii (iteratiile sunt eliminatorii, trebuie 2 din 5 puncte la ele)
+
+Introducere
+___________
+
+	Se numeste graf orientat un triplet g = (N, A, g) format dintr-o multime N de elemente numite noduri sau varfuri, dintr-o familie A de elemente numite arce si dintr-o aplicatie g : A -> N x N, numita functie de incidenta prin care fiecarui element a (apartine) A i se asociaza o pereche ordonata (x, y) apartine N x N cu c != y; daca eliminam conditia x != y atunci arcul de forma (x, x) se numeste bucla, iar G se numeste graf general orientat.
+
+Doua grafuri G1 si G2 se numesc izomorfme daca exista o bijectie (phi) de la N1 la N2 si o aplicatie (psi) de la A1 la A2
+
+	Daca oricare pereche ordonata (x, y) (apartine) N x N este imagine a cel mult q, q>1, elemente din A, atunci G = (N, A, g).se numeste multigraf orientat (in graf exista arce paralele)
+Daca in propozitia de mai sus consideram q=1, atunci obtinem definitia asa-numitului bigraf orientat (fara arce paralele).
+
+	Se numeste un graf neorientat un triplet de forma G = (N, A, g), cu N o multime de noduri sau varfuri, A o multime de muchii, g este o aplicatie g : A -> P(2)(N) = P2(N) (reunit) P1(N). 
+	Multigraf neorientat (graf simplu) are q>1, iar digraful neorientat are q=1, unde q reprezinta numarul maxim al muchiilor care au aceeasi imagine (numarul maxim de muchii paralele)
+   
+	Pentru un arc a = [x, y] (apartine) A dintr-un bigraf, spunem ca nodul x este predecsor al lui y si nodul y se numeste succesor al nodului x. Multimea succesorilor nodului x este multimea V+(x) = {y | (x, y) (apartine) A}
+
+	Se spune c anodul x este adiacent cu submultimea N' (inclus in) N, daca x (nu apartine) N' si x (apartine) V(N'), V(N') = (reuniune din) {V(y) | y (apartine) N'} 
+
+	Fie arcul a = (x, y) (apartine) A. Se spune ca arcul a este incident catre exterior la nodul x si incident catre interior la nodul y. Notam cu E+(x) arcurile incidente catre exterior (...)
+
+Doua arce se numesc adiacente daca au cel putin o extremitate in comun.
+
+... m-a cam pierdut cu notatiile, am auzit litere grecesti cat pentru tot anul 1 si 4 ani de liceu ...
+
+	Pentru un graf orientat G = (N, A, g) cu secventa L = (x1*a1, x2..., xk, ak+1), xi (apartine) N, i = 1...k+1, ai (apartine) A, i = 1...k, cu proprietatea ca fiecare are ai de forma (xi, xi+1) sau (xi+1, xi)
+
+m-am plictisit
+
+Numarul de arce al unui lant da lungime lantului. Daca nu exista ambiguitate, lantul poate fi prezentat ca o insiruire de noduri.
+Un lant se numeste simplu daca fiecare arc al grafului apare cel mult o data. 
+Un lant se numeste elementar daca un daca fiecare nod din secventa este utiulizat o singura data. 
+
+m-aaaam plictisit: https://drive.google.com/file/d/1ARJlVFOZ-1-eaYL1vu6Tr4v4YwMBZOZ_/view?usp=sharing
+mai sus e cursul, informatiile de aici nu mai sunt prea bune
+
+Daca un lant contine numai arce directe, el se numeste lant orientat sau drum. Daca pentru lanturi (x1, ... xk+1) avem xk+1 = x1, atunci lantul e numeste ciclu. Un exemplu de ciclu: L3 = (1, a1', 4, a1', 2, a21) -> ce o mai fi insemnand si asta.
+
+Orice ciclu orientat se numeste circuit (un drum care pleaca si se twemrina in acelasi nod)
+
+Notiunea de lant se defineste in mod asemanator si pentru grafuri neorientate. 
