@@ -16,8 +16,8 @@ class Product
 {
 public:
 
-	Product(std::uint16_t, std::uint8_t, double, std::string_view, std::string_view);
-	Product(std::uint16_t, std::uint8_t, double, std::string_view, ProductType);
+	Product(std::uint16_t, std::uint16_t, double, std::string_view, std::string_view);
+	Product(std::uint16_t, std::uint16_t, double, std::string_view, ProductType);
 	double PriceWithTVA();
 	bool NonperishableProducts();
 	std::string GetName();

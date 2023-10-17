@@ -1,6 +1,6 @@
 #include"Product.h"
 
-Product::Product(std::uint16_t id, std::uint8_t tva, double price, std::string_view name, std::string_view exp_date)
+Product::Product(std::uint16_t id, std::uint16_t tva, double price, std::string_view name, std::string_view exp_date)
 	: m_id(id)
 	, m_tva(tva)
 	, m_price(price)
@@ -8,7 +8,7 @@ Product::Product(std::uint16_t id, std::uint8_t tva, double price, std::string_v
 	, m_exp_date(exp_date)
 { }
 
-Product::Product(std::uint16_t id, std::uint8_t tva, double price, std::string_view name, ProductType type)
+Product::Product(std::uint16_t id, std::uint16_t tva, double price, std::string_view name, ProductType type)
 	: m_id(id)
 	, m_tva(tva)
 	, m_price(price)

@@ -26,7 +26,7 @@ void SortByPrice(std::vector<Product>& products)
 int main()
 {
 	std::uint16_t id;
-	std::uint8_t tva;
+	std::uint16_t tva;
 	double price;
 	std::string name, dateOrType;
 	ProductType type;
