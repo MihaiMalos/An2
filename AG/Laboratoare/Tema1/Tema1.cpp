@@ -98,14 +98,14 @@ void Tema1::paintEvent(QPaintEvent* event)
 
 QPointF Tema1::pointTranslation(QPoint firstNode, QPoint secondNode)
 {
-		if (firstNode.x() == secondNode.x() && firstNode.y() < secondNode.y())
-			return { 0, (qreal) NODE_RADIUS };
-		else if (firstNode.x() == secondNode.x() && firstNode.y() > secondNode.y())
-			return { 0, (qreal) -NODE_RADIUS };
-		else if (firstNode.y() == secondNode.y() && firstNode.x() < secondNode.x())
-			return { (qreal)NODE_RADIUS, 0 };
-		else if (firstNode.y() == secondNode.y() && firstNode.x() > secondNode.x())
-			return { (qreal)-NODE_RADIUS, 0 };
+		//if (firstNode.x() == secondNode.x() && firstNode.y() < secondNode.y())
+		//	return { 0, (qreal) NODE_RADIUS };
+		//else if (firstNode.x() == secondNode.x() && firstNode.y() > secondNode.y())
+		//	return { 0, (qreal) -NODE_RADIUS };
+		//else if (firstNode.y() == secondNode.y() && firstNode.x() < secondNode.x())
+		//	return { (qreal)NODE_RADIUS, 0 };
+		//else if (firstNode.y() == secondNode.y() && firstNode.x() > secondNode.x())
+		//	return { (qreal)-NODE_RADIUS, 0 };
 
 		double slope = (double) -(firstNode.y() - secondNode.y()) / (firstNode.x() - secondNode.x());
 

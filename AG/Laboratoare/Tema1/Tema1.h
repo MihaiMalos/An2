@@ -17,7 +17,7 @@ public:
 	virtual void paintEvent(QPaintEvent* event);
 
 private:
-	const int NODE_RADIUS = 20;
+	const int NODE_RADIUS = 40;
 	QPointF pointTranslation(QPoint circleCenter, QPoint point);
 	Ui::Tema1Class ui;
 	Graph graph;
