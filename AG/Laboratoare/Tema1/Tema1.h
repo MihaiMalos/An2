@@ -17,8 +17,10 @@ public:
 	virtual void paintEvent(QPaintEvent* event);
 
 private:
-	const int NODE_RADIUS = 40;
+	const int NODE_RADIUS = 20;
 	QPointF pointTranslation(QPoint circleCenter, QPoint point);
+	double calculateSlope(QPoint firstNode, QPoint secondNode);
+
 	Ui::Tema1Class ui;
 	Graph graph;
 	Node* selectedNode = nullptr;

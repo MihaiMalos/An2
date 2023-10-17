@@ -7,7 +7,7 @@ Tema1::Tema1(QWidget* parent)
 {
 	ui.setupUi(this);
 	ui.mainToolBar->deleteLater();
-	graph.setOrientation(false);
+	graph.setOrientation(true);
 }
 
 Tema1::~Tema1()
@@ -39,7 +39,8 @@ void Tema1::mousePressEvent(QMouseEvent* event)
 				}
 				else if (selectedNode == node)
 				{
-					return;
+					selectedNode = nullptr;
+					break;
 				}
 				else
 				{
@@ -57,7 +58,6 @@ void Tema1::mousePressEvent(QMouseEvent* event)
 
 					graph.addEdge(selectedNode, node);
 					graph.save("output.txt");
-					update();
 					selectedNode = nullptr;
 				}
 				break;
@@ -65,6 +65,7 @@ void Tema1::mousePressEvent(QMouseEvent* event)
 
 			}
 		}
+		update();
 	}
 }
 
@@ -76,21 +77,40 @@ void Tema1::paintEvent(QPaintEvent* event)
 	std::vector<Node*> nodes = graph.getNodes();
 	for (auto node : nodes)
 	{
+		QPen pen;
+		if (selectedNode == node) pen.setColor(Qt::red);
+		painter.setPen(pen);
+
 		QRect r(node->getX() - NODE_RADIUS, node->getY() - NODE_RADIUS, 2*NODE_RADIUS, 2*NODE_RADIUS);
 		painter.drawEllipse(r);
 		QString s;
 		s.setNum(node->getValue());
-
 		painter.drawText(r, Qt::AlignCenter, s);
 	}
 	std::vector<Edge*> edges = graph.getEdges();
 	for (auto edge : edges)
 	{
+		painter.setPen(nullptr);
 		QPoint firstNode(edge->getFirstNode()->getCoordinate());
 		QPoint secondNode(edge->getSecondNode()->getCoordinate());
 		QPointF firstNodeOffset = pointTranslation(firstNode, secondNode);
 		
+		double slope = (double)-(firstNode.y() - secondNode.y()) / (firstNode.x() - secondNode.x());
+		double angle = atan(slope) * 180 / 3.14;
+		if (firstNode.x() < secondNode.x()) angle -= 180;
 
+		if (graph.isOrientated())
+		{
+			QLineF angleline;
+			angleline.setP1(secondNode - firstNodeOffset);
+			angleline.setLength(NODE_RADIUS);
+
+			angleline.setAngle(angle - 30);
+			painter.drawLine(angleline);
+			angleline.setAngle(angle + 30);
+			painter.drawLine(angleline);
+		}
+		
 		painter.drawLine(firstNode + firstNodeOffset, secondNode - firstNodeOffset);
 
 	}
@@ -98,18 +118,14 @@ void Tema1::paintEvent(QPaintEvent* event)
 
 QPointF Tema1::pointTranslation(QPoint firstNode, QPoint secondNode)
 {
-		//if (firstNode.x() == secondNode.x() && firstNode.y() < secondNode.y())
-		//	return { 0, (qreal) NODE_RADIUS };
-		//else if (firstNode.x() == secondNode.x() && firstNode.y() > secondNode.y())
-		//	return { 0, (qreal) -NODE_RADIUS };
-		//else if (firstNode.y() == secondNode.y() && firstNode.x() < secondNode.x())
-		//	return { (qreal)NODE_RADIUS, 0 };
-		//else if (firstNode.y() == secondNode.y() && firstNode.x() > secondNode.x())
-		//	return { (qreal)-NODE_RADIUS, 0 };
-
-		double slope = (double) -(firstNode.y() - secondNode.y()) / (firstNode.x() - secondNode.x());
+	double slope = calculateSlope(firstNode, secondNode);
 
 		return firstNode.x() < secondNode.x() 
 			? QPointF{NODE_RADIUS* cos(atan(slope)), -NODE_RADIUS * sin(atan(slope))} 
 			: QPointF{ -NODE_RADIUS * cos(atan(slope)), NODE_RADIUS * sin(atan(slope)) };
+}
+
+double Tema1::calculateSlope(QPoint firstNode, QPoint secondNode)
+{
+	return (double) - (firstNode.y() - secondNode.y()) / (firstNode.x() - secondNode.x());
 }
