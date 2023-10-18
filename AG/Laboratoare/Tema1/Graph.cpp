@@ -1,9 +1,36 @@
 #include "Graph.h"
 #include <fstream>
+#include <algorithm>
+
+Graph::Graph()
+	: orientated(true)
+{
+
+}
+
+Graph::~Graph()
+{
+	reset();
+}
 
 void Graph::setOrientation(bool isOrientated)
 {
+	if (!orientated && isOrientated || orientated == isOrientated)
+		return;
 	orientated = isOrientated;
+
+	for (auto edge1 : edges)
+	{
+		for (auto edge2 : edges)
+		{
+			if (edge1->getFirstNode() == edge2->getSecondNode() && edge1->getSecondNode() == edge1->getFirstNode())
+			{
+				auto it = std::find(edges.begin(), edges.end(), edge2);
+				if (it != edges.end())
+					edges.erase(it);
+			}
+		}
+	}
 }
 
 void Graph::addNode(QPoint p)
@@ -17,6 +44,18 @@ void Graph::addEdge(Node* n1, Node* n2)
 {
 	Edge* newEdge = new Edge(n1, n2);
 	edges.push_back(newEdge);
+}
+
+void Graph::reset()
+{
+	for (auto edge : edges)
+		delete edge;
+	edges.clear();
+
+	for (auto node : nodes)
+		delete node;
+	nodes.clear();
+	orientated = true;
 }
 
 std::vector<Node*> Graph::getNodes()

@@ -1,72 +1,110 @@
 #include "Tema1.h"
 
 #include <QMouseEvent>
+#include <QDrag>
+#include <QMimeData>
 
 Tema1::Tema1(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 	ui.mainToolBar->deleteLater();
-	graph.setOrientation(true);
+	ui.orientatedOption->setChecked(true);
+	this->setAcceptDrops(true);
+	
 }
 
 Tema1::~Tema1()
 {}
 
+
+void Tema1::on_confirmSelection_clicked()
+{
+	if (ui.orientatedOption->isChecked())
+	{
+		graph.setOrientation(true);
+	}
+	else if (ui.unorientatedOption->isChecked())
+	{
+		graph.setOrientation(false);
+		ui.orientatedOption->setEnabled(false);
+		graph.save("output.txt");
+	}
+	update();
+}
+
+void Tema1::on_resetGraph_clicked()
+{
+	graph.reset();
+	ui.orientatedOption->setEnabled(true);
+	ui.orientatedOption->setChecked(true);
+	update();
+}
+
 void Tema1::mousePressEvent(QMouseEvent* event)
 {
 	std::vector<Node*> nodes = graph.getNodes();
+	bool canCreate = true;
+	Node* toSelect = nullptr;
+	for (auto node : nodes)
+	{
+		if (fabs(node->getX() - event->pos().x()) < 2 * NODE_RADIUS && fabs(node->getY() - event->pos().y()) < 2 * NODE_RADIUS)
+			canCreate = false;
+		if (fabs(node->getX() - event->pos().x()) < NODE_RADIUS && fabs(node->getY() - event->pos().y()) < NODE_RADIUS)
+			toSelect = node;
+	}
+
 	if (event->button() == Qt::LeftButton)
 	{
-		for (auto node : nodes)
+		if (canCreate && !toSelect)
 		{
-			if (fabs(node->getX() - event->pos().x()) < 2*NODE_RADIUS && fabs(node->getY() - event->pos().y()) < 2*NODE_RADIUS)
-				return;
+			graph.addNode(event->pos());
+			graph.save("output.txt");
+			selectedNode = nullptr;
 		}
-		graph.addNode(event->pos());
-		graph.save("output.txt");
-		update();
+		else if (!canCreate && toSelect)
+		{
+			selectedNode = toSelect;
+			QDrag* drag = new QDrag(this);
+			QMimeData* mimeData = new QMimeData;
+			drag->setMimeData(mimeData);
+			Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+			selectedNode = nullptr;
+		}
 	}
 	else if (event->button() == Qt::RightButton)
 	{
-		for (auto node : nodes)
+		if (!canCreate && toSelect)
 		{
-			if (fabs(node->getX() - event->pos().x()) < NODE_RADIUS && fabs(node->getY() - event->pos().y()) < NODE_RADIUS)
+			if (selectedNode == nullptr)
 			{
-				if (selectedNode == nullptr)
+				selectedNode = toSelect;
+			}
+			else if (selectedNode == toSelect)
+			{
+				selectedNode = nullptr;
+			}
+			else
+			{
+				std::vector<Edge*> edges = graph.getEdges();
+				for (auto edge : edges)
 				{
-					selectedNode = node;
-				}
-				else if (selectedNode == node)
-				{
-					selectedNode = nullptr;
-					break;
-				}
-				else
-				{
-					std::vector<Edge*> edges = graph.getEdges();
-					for (auto edge : edges)
+					auto firstNode = edge->getFirstNode();
+					auto secondNode = edge->getSecondNode();
+					if (firstNode == selectedNode && secondNode == toSelect ||
+						firstNode == toSelect && secondNode == selectedNode && !graph.isOrientated())
 					{
-						auto firstNode = edge->getFirstNode();
-						auto secondNode = edge->getSecondNode();
-						if (firstNode == selectedNode && secondNode == node || 
-							firstNode == node && secondNode == selectedNode && !graph.isOrientated())
-						{
-							return;
-						}
+						return;
 					}
-
-					graph.addEdge(selectedNode, node);
-					graph.save("output.txt");
-					selectedNode = nullptr;
 				}
-				break;
 
-
+				graph.addEdge(selectedNode, toSelect);
+				graph.save("output.txt");
+				selectedNode = nullptr;
 			}
 		}
-		update();
 	}
+	update();
 }
 
 
@@ -114,6 +152,24 @@ void Tema1::paintEvent(QPaintEvent* event)
 		painter.drawLine(firstNode + firstNodeOffset, secondNode - firstNodeOffset);
 
 	}
+}
+
+void Tema1::dragEnterEvent(QDragEnterEvent* event)
+{
+	event->acceptProposedAction();
+}
+
+void Tema1::dropEvent(QDropEvent* event)
+{
+	auto nodes = graph.getNodes();
+	for (auto node : nodes)
+	{
+		if (node == selectedNode)
+			continue;
+		if (fabs(node->getX() - event->pos().x()) < 2 * NODE_RADIUS && fabs(node->getY() - event->pos().y()) < 2 * NODE_RADIUS)
+			return;
+	}
+	selectedNode->setCoordinate(event->pos());
 }
 
 QPointF Tema1::pointTranslation(QPoint firstNode, QPoint secondNode)

@@ -10,10 +10,14 @@ class Graph
 	bool orientated;
 
 public:
+	Graph();
+	~Graph();
+
 	void setOrientation(bool isOrientated);
 	void addNode(QPoint p);
 	void addEdge(Node* n1, Node* n2);
 	
+	void reset();
 
 	std::vector<Node*> getNodes();
 	std::vector<Edge*> getEdges();
