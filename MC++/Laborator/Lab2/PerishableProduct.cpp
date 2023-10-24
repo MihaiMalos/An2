@@ -7,7 +7,7 @@ PerishableProduct::PerishableProduct(uint16_t id, std::string_view name, float r
 
 }
 
-const std::string& PerishableProduct::GetExpirationDate() const
+const std::string_view& PerishableProduct::GetExpirationDate() const
 {
 	return m_expirationDate;
 }

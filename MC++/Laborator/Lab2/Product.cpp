@@ -13,7 +13,7 @@ uint16_t Product::GetID() const
 	return m_id;
 }
 
-const std::string& Product::GetName() const
+const std::string Product::GetName() const
 {
 	return m_name;
 }

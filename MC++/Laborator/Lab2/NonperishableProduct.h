@@ -15,7 +15,6 @@ public:
 	NonperishableProductType GetType();
 	int32_t GetVAT() const override;
 	float GetPrice() const override;
-
 private:
 	static const uint8_t VAT = 19;
 	NonperishableProductType m_type;
