@@ -1,0 +1,58 @@
+enum class EPlayer 
+{
+FirstPlayer,
+SecondPlayer,
+};
+
+IPosition
+_________
+
+Position : public IPosition
+___________________________
+
+IGame
+_____
+
++ PlaceColumn() : void
++ MakeBridge() : void
++ RemoveBridge() : void
+
++ GetTurn() : bool
+
+
+Game : public IGame
+____
+- Board
+- columnSize
+
+___________________________
+
+Board
+_____
+- matrice n x n
+- lista piloni, poduri
+
+
+Bridge
+______
+
+- EPlayer player
++ IColumn firstColumn, secondColumn
+
+IColumn
+_______
+
+
+Column : public IColumn
+______
+
+- IPosition pos
+- EPlayer player
+
+___________________________
+
+ 
+
+
+
+

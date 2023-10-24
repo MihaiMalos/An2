@@ -1,0 +1,48 @@
+Vector:
+Produs scalar
+| A * B | = | A | * | B | * cos(A,B)
+| A * B | = Ax*Bx + Ay*By + Az*Bz
+
+Utilitate: punctul de coliziune al unei sfere cu un plan
+
+Matrice:
+Operatii -> translatie, rotatie, scalare
+
+
+Variabile uniforme:
+-> tipuri de variable in shadere, transfera date de la CPU la GPU
+
+docs.gl/sl4/all
+
+pentru lab:
+----------------
+(cauta GLUint):
+
+GLuint TriangleColorLocation
+----------------
+
+----------------
+in shader:
+
+in vec4 ex_Color
+out vec4 out_Color
+uniform vec4 u_TriangleColor
+
+out_Color = u_TriangleColor
+----------------
+
+----------------
+sub WorldMatrixLocation = ...
+TriangleColorLocation = glGetUniformLocation(u_TriangleColor);
+----------------
+
+----------------
+inainte de glDrawArrays(GL_TRIANGLES, 0, 3);
+glUniform4f(TriangleColorLocation, r, g, b, 1.0);
+----------------
+
+dupa glVertexAttibPointer(1, 4, ...)
+
+float r = (float) (glm::sin(glfwGetTime() * 2) + 1.f)/2.f;
+float g = (float) (glm::sin(glfwGetTime() * 3) + 1.f)/2.f;
+float b = (float) (glm::sin(glfwGetTime() * 4) + 1.f)/2.f;

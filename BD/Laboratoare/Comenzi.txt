@@ -20,7 +20,13 @@ Dispay tables of a database:
 Select all elements from a table:
 # select * from TABLE_NAME;
 
+Table Commands
+______________
 
+Modify data from table:
+# alter table TABLE_NAME alter column COLUMN_NAME type DATA_TYPE;
+# alter table TABLE_NAME add column CLUMN_NAME DATA_TYPE;
+# update city set city = 'Brasov' where zip = 1;
 
 
 Backup
