@@ -9,6 +9,7 @@ class Node
 
 public:
 	Node(QPoint p);
+	Node(const Node& node);
 
 	void setCoordinate(QPoint p);
 	void setValue(int v);

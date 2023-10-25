@@ -75,4 +75,9 @@
       <Filter>Header Files\View</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="output.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

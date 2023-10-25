@@ -8,6 +8,17 @@ Graph::Graph()
 
 }
 
+Graph::Graph(const Graph& graph)
+{
+	auto nodes = graph.getNodes();
+	auto edges = graph.getEdges();
+	for (auto node : nodes)
+		this->addNode(node);
+
+	for (auto edge : edges)
+		this->addEdge(edge);
+}
+
 Graph::~Graph()
 {
 	reset();
@@ -40,6 +51,13 @@ void Graph::addNode(QPoint p)
 	nodes.push_back(newNode);
 }
 
+
+void Graph::addNode(Node* n1)
+{
+	Node* newNode = new Node(*n1);
+	nodes.push_back(newNode);
+}
+
 void Graph::addEdge(Node* n1, Node* n2)
 {
 	Edge* newEdge = new Edge(n1, n2);
@@ -58,12 +76,12 @@ void Graph::reset()
 	orientated = true;
 }
 
-std::vector<Node*> Graph::getNodes()
+std::vector<Node*> Graph::getNodes() const
 {
 	return nodes;
 }
 
-std::vector<Edge*> Graph::getEdges()
+std::vector<Edge*> Graph::getEdges() const
 {
 	return edges;
 }

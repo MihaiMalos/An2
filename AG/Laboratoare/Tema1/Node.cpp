@@ -6,6 +6,13 @@ Node::Node(QPoint p)
 
 }
 
+Node::Node(const Node& node)
+	: coordinate(node.getCoordinate())
+	, value(node.value)
+{
+
+}
+
 void Node::setCoordinate(QPoint p)
 {
 	coordinate = p;

@@ -38,6 +38,7 @@ void Tema1::on_resetGraph_clicked()
 	graph.reset();
 	ui.orientatedOption->setEnabled(true);
 	ui.orientatedOption->setChecked(true);
+	graph.save("output.txt");
 	update();
 }
 
