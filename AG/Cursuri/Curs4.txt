@@ -1,0 +1,106 @@
+Parcurgerea Generica (PG)
+_________________________
+
+   Complexitatea PG este O(m+n) unde m este numarul de arce si n numarul de noduri. Fiecare nod intra in V si iese din V cel mult o data pe parcursul executiei ciclului while, ceea ce
+inseamna ca algoritmul are cel mult 2n-1 iteratii (s intra in V inainte de ciclul while). 
+   In interiorul ciclului while, verificarea existentei arcelor (x, y) apartinand lui A, cu y apartinand lui U se executa in total de cel mult m ori (fiecare arc este discutat cel mult
+o data). Operatiile: selectare x din V, U = U - {y}, y apartine lui U, V = V reunit cu {y}, V = V - {x}, W = W reunit cu {x} au timp constant (pot fi programare in acest mod). 
+   Asadar, complexitatea algoritmului este O(m+n), care in majoritatea situatiilor insemana O(m) deoarece exista pana la n^2 arce pentru numarul de noduri. 
+
+Pentru U putem considera un vector de lungime l cu valori booleene. U(k) = true daca si numai daca nodul k este in U. 
+Pentru V putem considera o structura de tip stiva/coada. 
+Pentru W putem considera un vector care retine nodurile in ordinea introducerii lor (un vector a carui lungime creste la fiecare introducere).
+
+Alg. PG construieste o arborescenta de parcurgere a grafului din nodul S care este si radacina arborescentei. 
+
+   Exista situatii in care algoritmul de parcurgere este folosit sub forma de parcurgere totala: se alege o sursa S din care se gasesc toate nodurile accesibile. Daca U este diferit de
+multimea vida, este selectat un nou nod sursa din care se porneste o noua parcurgere s.a.m.d. pana cand U devine multimea vida. 
+
+Parcurgerea Totala Generica (PTG)
+_________________________________
+
+   Demonstratie: la fiecare iteratie din while-ul W != N, cel putin un nod din U este parcurs. La sfarsitul acestui ciclu, daca V != multimea vida , un nou nod din U este selectat. In
+consecinta, algoritmul parcurge toate nodurile grafului. 
+   Complexitatea: cumuland toate iteratiile ciclului while V != multimea vida, avem in total N-1 ... si N scoateri de noduri din V, adica 2N-1 iteratii. De asemenea, ca si in cazul PG,
+arcele grafului sunt luate in discutie cel mult o data fiecare. Prin urmare, complexitatea este tot O(m+n). 
+
+PROCEDURA DRUM(p, s, y):
+BEGIN:
+   se tipareste y:
+   WHILE p(y) != 0 DO
+   BEGIN
+      x := p(y)
+      se tipareste x;
+      y := x
+   END;
+END.
+
+   Procedura DRUM gaseste in O(n) un drum de la s la y daca y este accesibil din s. Drumul gasit este dat de ordinea inversa a nodurilor tiparite. 
+
+Parcurgerea in latime a grafurilor (BF)
+_______________________________________
+
+BF = breadth first
+
+   Se doreste gasirea cate unui drum, cel mai scurt ca numar de arce, de la o sursa 's' la nodurile accesibile din 's'. Pentru un drum D(x), de la 's' la nodul x, notam cu l(Dx) lungimea
+acestui drum (numarul de arce). 
+
+   Notam cu d(x) = min{l(Dx) | Dx apartine lui Dx} daca Dx != multimea vida SAU infinit daca Dx = multimea vida, unde Dx este multimea tuturor nodurilor de la s la x, iar d(x) reprezinta
+lungimea drumului cel mai scurt de la s la x. Algoritmul BF va gasi drumurile de lungime d(x) de la s la x, oricare x nod accesibil din s.
+   
+PROGRAM PBF:
+BEGIN:
+   U := N - {s}; V:= {s}; W := multimea vida;
+   FOR toti y apartin N DO p(y) := 0;
+   l(s):= 0
+   FOR toti y apartin U DO l(y) := infinit;
+   WHILE V != multimea vida DO
+   BEGIN
+      se selecteaza cel mai vechi nod x introdus in V;
+      FOR (x y) apartine A DO
+         IF y apartine U
+            THEN U:= U - {y}; V := V reunit {y}; p(y) := x;
+               l(y):= l(x) + 1;
+      V:= V - {x}; W:= W reunit {x};
+   END;
+END.
+
+   Tema (cica): dintr-un fisier text se citeste o matrice de valori 0, 1 sau 2 de dimensiuni m x n care reprezinta un labirint. Fiecare valoare 1 reprezinta "casuta alba" prin care putem
+trece, iar 0 casuta neagra prin care nu putem trece. Valoarea 2 apare o singura data si reprezinta punctul de plecare. Se cere ca pentru fiecare iesire sa se gaseasca drumul cel mai scurt
+pornind din casuta cu valoarea 2. Fiecare casuta alba de pe marginea matricei reprezinta o posibila iesire. 
+   Pornind de la matrice, se construieste un graf orientat ale carui noduri sunt date de casutele albe (cu valoare 1). Lista de adiacenta a fiecarui nod va contine de la 0 la 4 noduri, in 
+functie de casuta respectiva, cu cate casute albe se invecineaza. Aplicand PBF pe graful rezultat, gasim pentru fiecare iesire drumul cel mai scurt din nodul de plecare (daca exista)
+
+
+Teorema: Algoritmul PBF gaseste nodurile accesibile din s si se incheie in numar finit de iteratii. 
+Demonstratie: PBF este caz particular de PG cu deosebirile:
+ 1 - Multimea V este organizata ca o coada
+ 2 - Mai multe iteratii date de if (x, y) apartine A, y apartine U din PG sunt grupate intr-o instructiune for pentru acelasi nod x. Cu alte cuvinte, pentru un nod x din V, cel mai vechi,
+toate arcele ce pleaca din x sunt discutate in ciclul for (x, y) apartine A, if y apartine U. 
+In consecinta, asemenea PG, PBF se incheie in numar finit de iteratii si determina nodurile accesibile din s. Complexitatea algoritmului este O(m+n).
+
+Teoreme:
+ 1 - Algoritmul PBF calculeaza elementele tabloului l astfel incat in final d(y) <= l(y), oricare ar fi y apartine N;
+ 2 - Daca la iteratia k a algoritmului avem v = {x1, x2, ..., xr} nodurile fiind introdusa in aceasta ordine, atunci l(xr) <= l(x1) + 1 si l(xi) <= l(xi+1), i = 1...r-1
+
+ (1) Demonstram prin inductie dupa k, numarul de iteratii ale ciclului while. Initial l(s) := 0, l(y) = infinit pentru y apartine U si evident d(y) <= l(y), y apartine N. 
+ Presupunem ca in interatia k avem d(y) <= l(y), oricare y. In iteratia k+1 avem una dintre urmatoarele situatii:
+c1: Exista arc (x,y) apartine A si y apartine U. In acest caz, 
+l(y) = l(x) + 1 si d(y) <= d(x) + 1 <= l(x) + 1 = l(y) (deoarece l(x) nu se modifica). Asadar, avem d(y) <= l(y), oricare y apartine U. Pentru celelalte noduri y, l(y) nu se modifica in
+iteratia k+1.
+c2: Nu exista arc (x, y) admisibil (x,y) nu apartine A sau y nu apartine U, iar in acest caz l(y) ramane nemodificar pentru oricare y. 
+
+(2) Utilizam indunctia dupa k numarul de iteratii ale ciclului WHILE. Initial V := {s}, deci x1 = s, xr = s si l(xr) < l(x1) + 1. In iteratia k+1 pot exista cazurile:
+c1: Exista arc (x, y) apartine A si y apartine U. In acest caz, V = {x1...xr, xr+1}, unde xr+1 = y. Avem l(xr+1) = l(y) = l(x) + 1 = l(x1) + 1. Avem de asemenea l(xr) <= l(x1) + 1 = 
+= l(x) + 1 = l(y) = l(xr + 1), iar inegalitatile l(xi) < l(xi+1), i = 1 ... r-1 au ramas nemodificate.
+c2: Nu exista arc (x, y) sau y nu apartine U. In acest caz V = {x2, ..., xr}. Avem l(xr) < l(x1) + 1 <= l(x2) + 1 si inegalitatile l(xi) <= l(xi+1), i = 1...r-1 au ramas nemodificate. 
+
+
+   Teorema: Algoritmul PBG determina elementele tabloului l astfel incat l(y) = d(y) pentu y apartine N.
+Demonstratie: Se demonstreaza prin inductie dupa k numarul iteratiilor ciclului WHILE. 
+Fie multimea Nk = {y apartine N | d(y) = k}. Pentru k = 0 avem N0 = {s} si deci d(s) = l(s) = 0. Presupunem afirmatia adevarata pentru k. Afirmatia pentru k + 1 rezulta cu usurinta, 
+deoarece, in conformitate cu Teorema 2.4 punctul (2), un nod y apartine Nk+1 este vizitat plecand de la un nod x apartine Nk numai dupa ce toate nodurile din Nk sunt vizitate. Deci, daca 
+y apartine Nk+1 si este vizitat explorand arcul (x, y), x apartine Nk, atunci l(y) = l(x) + 1 = d(x) + 1 = k + 1 = d(y).
+
+In consecinta, din ultima teorema rezulta ca drumul gasit de PBF de la 's' la orice nod y are lungimea cea mai scurta dintre toate nodurile de la s la y. 
+
