@@ -15,8 +15,6 @@ Graph::Graph(const Graph& graph)
 	for (auto node : nodes)
 		this->addNode(node);
 
-	for (auto edge : edges)
-		this->addEdge(edge);
 }
 
 Graph::~Graph()

@@ -1,0 +1,36 @@
+Tipuri de linii in OpenGL
+_________________________
+
+GL_LINES - linie din 2 puncte
+GL_LINE_STRIP - linie din n puncte
+GL_LNE_LOOP - linie din n-1 puncte (ultimul varf specificat duce linie pana la primul punct secificat)
+
+Tipuri de triunghiuri:
+
+GL_TRIANGLES
+GL_TRIANGLE_STRIP - triunghiuri conectate formand o panglica. primul triunghi are varfurile v0, v2, v1, urmatorul are v1, v2, v3, urmatorul v3, v2, v4. Toate triunghiurile trebuie sa fie orientate la fel
+GL_TRIANGLE_FAN - triunghiuri conectate la un varf comun
+
+Patrulatere:
+____________
+
+GL_QUADS - se specifica 4 varfuri
+GL_QUAD_STRIP - specifica o serie de patrulatere conectate
+
+Poligoane:
+__________
+
+GL_POLYGON
+
+Un poligon nu este corect daca:
+- laturile se intersecteaza
+- poligonul este concav
+- toate varfurile nu apartin unui plan
+
+Obiecte 3D din GLUT
+___________________
+
+Con - void glutWireCone
+Cub - void glutWireCube
+Dodecaedru - void glutSolidDodecahedron
+Icosaedru - void glutSolidIcosahedron
