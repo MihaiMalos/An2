@@ -2,40 +2,42 @@
 
 #include "Edge.h"
 
-enum class EDirection {
-	leftTop,
-	rightTop,
-	leftBottom,
-	rightBottom,
-};
-
 class Graph
 {
-	std::unordered_map<int, Node*> nodes;
-	std::vector<Edge*> edges;
-	std::vector<std::vector<int>> matrix;
-	float node_radius;
-	EDirection position;
-
 public:
-	Graph(std::vector<std::vector<int>> new_matrix, EDirection position);
-	Graph(const Graph& graph);
+	Graph(std::vector<std::vector<int>> new_matrix);
 	~Graph();
 
-	void initGraph(QSize screenSize);
-	QSizeF directionToOffset(QSize screenSize);
+	void InitGraph(QSize screenSize);
+	void AddNode(QPointF p, int value);
+	void AddEdge(Node* n1, Node* n2);
 
-	void addNode(QPointF p, int value);
-	void addNode(Node n1);
-	void addEdge(Node* n1, Node* n2);
-	void updateSize(QSize screenSize);
+	std::unordered_map<int, Node*> GetNodes() const;
+	std::vector<Edge*> GetEdges() const;
+	std::vector<Node*> GetExitNodes() const;
+	Node* GetEntryNode() const;
+	std::vector<std::vector<int>> GetMatrix() const;
+	float GetRadius() const;
+
+	void UpdateSize(QSize screenSize);
+	std::vector<Node*> ComputeMazePaths();
 	
-	void reset();
+private:
+	void Reset();
+	std::vector<Node*> BreadthFirstSearch(Node* exitNode);
+	void InitAdjacencyList();
 
-	std::unordered_map<int, Node*> getNodes() const;
-	std::vector<Edge*> getEdges() const;
-	std::vector<std::vector<int>> getMatrix() const;
-	float getRadius() const;
+private:
+	std::unordered_map<int, Node*> nodes;
+	std::vector<Node*> allNodes;
+	std::vector<Edge*> edges;
+	std::vector<std::vector<int>> matrix;
+	std::vector<std::vector<int>> adjancencyList;
+
+	Node* entryNode;
+	std::vector<Node*> exitNodes;
+
+	float nodeRadius;
 
 
 

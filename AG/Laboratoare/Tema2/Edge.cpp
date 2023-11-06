@@ -7,12 +7,12 @@ Edge::Edge(Node* n1, Node* n2)
 
 }
 
-Node* Edge::getFirstNode()
+Node* Edge::GetFirstNode()
 {
 	return firstNode;
 }
 
-Node* Edge::getSecondNode()
+Node* Edge::GetSecondNode()
 {
 	return secondNode;
 }

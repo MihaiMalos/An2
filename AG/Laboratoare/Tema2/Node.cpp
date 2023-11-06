@@ -7,37 +7,37 @@ Node::Node(QPointF p)
 }
 
 Node::Node(const Node& node)
-	: coordinate(node.getCoordinate())
+	: coordinate(node.GetCoordinate())
 	, value(node.value)
 {
 
 }
 
-void Node::setCoordinate(QPointF p)
+void Node::SetCoordinate(QPointF p)
 {
 	coordinate = p;
 }
 
-void Node::setValue(int v)
+void Node::SetValue(int v)
 {
 	value = v;
 }
-QPointF Node::getCoordinate() const
+QPointF Node::GetCoordinate() const
 {
 	return coordinate;
 }
 
-float Node::getX() const
+float Node::GetX() const
 {
 	return coordinate.x();
 }
 
-float Node::getY() const
+float Node::GetY() const
 {
 	return coordinate.y();
 }
 
-int Node::getValue() const
+int Node::GetValue() const
 {
 	return value;
 }

@@ -2,32 +2,22 @@
 #include <fstream>
 #include <algorithm>
 #include <QDebug>
+#include <queue>
 
-Graph::Graph(std::vector<std::vector<int>> new_matrix, EDirection position)
-	: node_radius(20.0f)
+Graph::Graph(std::vector<std::vector<int>> new_matrix)
+	: nodeRadius(20.0f)
 	, matrix(new_matrix)
-	, position(position)
 {
-
-}
-
-Graph::Graph(const Graph& graph)
-{
-	//auto nodes = graph.getNodes();
-	///*auto edges = graph.getEdges();*/
-	//for (auto node : nodes)
-	//	addNode(*node);
 
 }
 
 Graph::~Graph()
 {
-	reset();
+	Reset();
 }
 
-void Graph::initGraph(QSize screenSize)
+void Graph::InitGraph(QSize screenSize)
 {
-	QSizeF offset = directionToOffset(screenSize);
 	int rows = matrix.size();
 	int columns = matrix[0].size();
 
@@ -35,10 +25,15 @@ void Graph::initGraph(QSize screenSize)
 	{
 		for (int columnIndex = 0; columnIndex < columns; columnIndex++)
 		{
-			if (matrix[rowIndex][columnIndex] != 0)
+			int elementType = matrix[rowIndex][columnIndex];
+			if (elementType != 0)
 			{
 				int value = rowIndex * columns + columnIndex;
-				addNode(QPointF(0, 0), value);			
+				AddNode(QPointF(0, 0), value);	
+				if (elementType == 2)
+					exitNodes.push_back(nodes.at(value));
+				else if (elementType == 3)
+					entryNode = nodes.at(value);
 			}
 		}
 	}
@@ -50,48 +45,28 @@ void Graph::initGraph(QSize screenSize)
 			{
 				int value = rowIndex * columns + columnIndex;
 				if (rowIndex + 1 < rows && matrix[rowIndex + 1][columnIndex] != 0)
-					addEdge(nodes.at(value), nodes.at(value + columns));
+					AddEdge(nodes.at(value), nodes.at(value + columns));
 				if (columnIndex + 1 < columns && matrix[rowIndex][columnIndex + 1] != 0)
-					addEdge(nodes.at(value), nodes.at(value + 1));
+					AddEdge(nodes.at(value), nodes.at(value + 1));
 			}
 		}
 	}
-
+	InitAdjacencyList();
 }
 
-QSizeF Graph::directionToOffset(QSize screenSize)
-{
-	switch (position)
-	{
-	case EDirection::leftTop:
-		return QSizeF(0, 0);
-	case EDirection::rightTop:
-		return QSizeF(screenSize.width() / 2.0f, 0);
-	case EDirection::leftBottom:
-		return QSizeF(0, screenSize.height() / 2.0f);
-	case EDirection::rightBottom:
-		return QSizeF(screenSize.width() / 2.0f, screenSize.height() / 2.0f);
-	}
-}
-
-void Graph::addNode(QPointF p, int value)
+void Graph::AddNode(QPointF p, int value)
 {
 	Node* newNode = new Node(p);
-	newNode->setValue(nodes.size() + 1);
+	newNode->SetValue(nodes.size());
+	allNodes.push_back(newNode);
 	nodes.emplace(value, newNode);
 }
 
 
-void Graph::addNode(Node n1)
-{
-	//Node* newNode = new Node(n1);
-	//nodes.push_back(newNode);
-}
-
-void Graph::addEdge(Node* n1, Node* n2)
+void Graph::AddEdge(Node* n1, Node* n2)
 {
 	auto it = std::find_if(edges.begin(), edges.end(), [&](Edge* edge) {
-		return edge->getFirstNode() == n2 && edge->getSecondNode() == n1;
+		return edge->GetFirstNode() == n2 && edge->GetSecondNode() == n1;
 		});
 
 	if (it != edges.end()) return;
@@ -99,9 +74,9 @@ void Graph::addEdge(Node* n1, Node* n2)
 	edges.push_back(newEdge);
 }
 
-void Graph::updateSize(QSize screenSize)
+void Graph::UpdateSize(QSize screenSize)
 {
-	QSizeF offset = directionToOffset(screenSize);
+	QSizeF offset = QSizeF(screenSize.width() / 2.0f, 0);
 	int rows = matrix.size();
 	int columns = matrix[0].size();
 	for (int rowIndex = 0; rowIndex < rows; rowIndex++)
@@ -116,15 +91,26 @@ void Graph::updateSize(QSize screenSize)
 				QPointF offsetToCenter = QPointF((screenSize.width() / (2.0f * columns)), (screenSize.height() / (2.0f * rows)));
 				float newX = x + offset.width() - 0.05 * screenSize.width();
 				float newY = y + offset.height() - 0.05 * screenSize.height();
-				nodes.at(value)->setCoordinate(QPointF(newX, newY) + offsetToCenter);
+				nodes.at(value)->SetCoordinate(QPointF(newX, newY) + offsetToCenter);
 				
 			}
 		}
 	}
-	node_radius = fmin(screenSize.width(), screenSize.height()) / 45.0f;
+	nodeRadius = fmin(screenSize.width(), screenSize.height()) / 45.0f;
 }
 
-void Graph::reset()
+std::vector<Node*> Graph::ComputeMazePaths()
+{
+	std::vector<Node*> exitPaths;
+	for (auto node : exitNodes)
+	{
+		auto path = BreadthFirstSearch(node);
+		exitPaths.insert(exitPaths.end(), path.begin(), path.end());
+	}
+	return exitPaths;
+}
+
+void Graph::Reset()
 {
 	for (auto edge : edges)
 		delete edge;
@@ -135,22 +121,87 @@ void Graph::reset()
 	nodes.clear();
 }
 
-std::unordered_map<int, Node*> Graph::getNodes() const
+std::vector<Node*> Graph::BreadthFirstSearch(Node* exitNode)
+{
+	std::queue<Node*> visited;
+	std::vector<int> predecessors(nodes.size(), 0), length(nodes.size(), 0);
+	std::vector<bool> unvisited(nodes.size(), true);
+	std::vector<Node*> path;
+
+
+	unvisited[entryNode->GetValue()] = false;
+	visited.push(entryNode);
+
+	while (!visited.empty())
+	{
+		auto currentNode = visited.front();
+		auto currentNodeValue = visited.front()->GetValue();
+
+		if (currentNode == exitNode)
+		{
+			while (currentNode != entryNode)
+			{
+				path.push_back(currentNode);
+				currentNode = allNodes[predecessors[currentNodeValue]];
+				currentNodeValue = currentNode->GetValue();
+			}
+			return path;
+		}
+
+		for (auto neighbor : adjancencyList[currentNodeValue])
+		{
+			if (unvisited[neighbor])
+			{
+				unvisited[neighbor] = false;
+				visited.push(allNodes[neighbor]);
+				predecessors[neighbor] = currentNodeValue;
+				length[neighbor] = length[currentNodeValue] + 1;
+			}
+		}
+		visited.pop();
+	}
+}
+
+void Graph::InitAdjacencyList()
+{
+	adjancencyList.resize(nodes.size());
+	for (auto edge : edges)
+	{
+		auto firstNode = edge->GetFirstNode()->GetValue();
+		auto secondNode = edge->GetSecondNode()->GetValue();
+
+		adjancencyList[firstNode].push_back(secondNode);
+		adjancencyList[secondNode].push_back(firstNode);
+		
+	}
+}
+
+std::unordered_map<int, Node*> Graph::GetNodes() const
 {
 	return nodes;
 }
 
-std::vector<Edge*> Graph::getEdges() const
+std::vector<Edge*> Graph::GetEdges() const
 {
 	return edges;
 }
 
-std::vector<std::vector<int>> Graph::getMatrix() const
+std::vector<Node*> Graph::GetExitNodes() const
+{
+	return exitNodes;
+}
+
+Node* Graph::GetEntryNode() const
+{
+	return entryNode;
+}
+
+std::vector<std::vector<int>> Graph::GetMatrix() const
 {
 	return matrix;
 }
 
-float Graph::getRadius() const
+float Graph::GetRadius() const
 {
-	return node_radius;
+	return nodeRadius;
 }

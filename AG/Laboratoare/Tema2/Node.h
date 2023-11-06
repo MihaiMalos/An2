@@ -11,13 +11,13 @@ public:
 	Node(QPointF p);
 	Node(const Node& node);
 
-	void setCoordinate(QPointF p);
-	void setValue(int v);
+	void SetCoordinate(QPointF p);
+	void SetValue(int v);
 
-	QPointF getCoordinate() const;
-	float getX() const;
-	float getY() const;
-	int getValue() const;
+	QPointF GetCoordinate() const;
+	float GetX() const;
+	float GetY() const;
+	int GetValue() const;
 
 	bool operator==(Node node) const;
 };
