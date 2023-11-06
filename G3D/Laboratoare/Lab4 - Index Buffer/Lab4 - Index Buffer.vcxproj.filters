@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="piece.cppm">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="piece.cpp">
+    <ClCompile Include="Lab4 - Index Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

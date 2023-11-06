@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9f5d4c3e-645f-4ded-929e-b956aad6d608}</ProjectGuid>
-    <RootNamespace>Lab5</RootNamespace>
+    <ProjectGuid>{be1f965c-3fe6-437e-ab8a-05a10f36190a}</ProjectGuid>
+    <RootNamespace>Lab4IndexBuffer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,15 +70,28 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glm-stable\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\lib;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glm-stable\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\lib;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glm-stable\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\lib;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glm-stable\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\freeglut-MSVC-3.0.0-2.mp\freeglut\lib;C:\Users\marin\OneDrive\Scoala\Geografie\MihaiMalos\An2\G3D\Libs\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,9 +106,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,9 +120,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,9 +134,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,9 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="piece.cpp" />
-    <ClCompile Include="piece.cppm" />
+    <ClCompile Include="Lab4 - Index Buffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
