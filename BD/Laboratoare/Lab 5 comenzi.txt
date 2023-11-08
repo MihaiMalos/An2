@@ -1,0 +1,13 @@
+Baza de date vanzari:
+
+1. Afisarea celui mai bine vândut produs.
+
+
+2. Afisarea listei de produse din care nu s-a vândut nicio unitate.
+
+
+3. Afisarea clientului care a plasat cele mai multe comenzi inultimele 6 luni împreuna cu valorile acestor comenzi.
+
+
+4. Afisarea comenzilor care au data de livrare depasita.
+

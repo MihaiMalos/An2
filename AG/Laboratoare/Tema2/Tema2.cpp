@@ -45,7 +45,7 @@ void Tema2::paintEvent(QPaintEvent* event)
 	}
 
 	// Path nodes
-	for (auto node : mazeGraph->ComputeMazePaths())
+	for (auto node : mazeGraph->BreadthFirstSearch())
 	{
 		painter.setBrush(Qt::green);
 		auto nodeCoords = node->GetCoordinate();
@@ -129,7 +129,7 @@ void Tema2::paintEvent(QPaintEvent* event)
 
 			painter.fillRect(r3, rectColor);
 
-			for (auto node : mazeGraph->ComputeMazePaths())
+			for (auto node : mazeGraph->BreadthFirstSearch())
 			{
 				int key = row * matrixCols + column;
 				auto it = nodes.find(key);

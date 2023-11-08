@@ -99,15 +99,18 @@ void Graph::UpdateSize(QSize screenSize)
 	nodeRadius = fmin(screenSize.width(), screenSize.height()) / 45.0f;
 }
 
-std::vector<Node*> Graph::ComputeMazePaths()
+std::vector<Node*> Graph::Drum(std::vector<int> predecessors, Node* exitNode)
 {
-	std::vector<Node*> exitPaths;
-	for (auto node : exitNodes)
+	auto currentNode = exitNode;
+	auto currentNodeValue = exitNode->GetValue();
+	std::vector<Node*> path;
+	while (currentNode != entryNode)
 	{
-		auto path = BreadthFirstSearch(node);
-		exitPaths.insert(exitPaths.end(), path.begin(), path.end());
+		path.push_back(currentNode);
+		currentNode = allNodes[predecessors[currentNodeValue]];
+		currentNodeValue = currentNode->GetValue();
 	}
-	return exitPaths;
+	return path;
 }
 
 void Graph::Reset()
@@ -121,12 +124,11 @@ void Graph::Reset()
 	nodes.clear();
 }
 
-std::vector<Node*> Graph::BreadthFirstSearch(Node* exitNode)
+std::vector<Node*> Graph::BreadthFirstSearch()
 {
 	std::queue<Node*> visited;
 	std::vector<int> predecessors(nodes.size(), 0), length(nodes.size(), 0);
 	std::vector<bool> unvisited(nodes.size(), true);
-	std::vector<Node*> path;
 
 
 	unvisited[entryNode->GetValue()] = false;
@@ -136,17 +138,6 @@ std::vector<Node*> Graph::BreadthFirstSearch(Node* exitNode)
 	{
 		auto currentNode = visited.front();
 		auto currentNodeValue = visited.front()->GetValue();
-
-		if (currentNode == exitNode)
-		{
-			while (currentNode != entryNode)
-			{
-				path.push_back(currentNode);
-				currentNode = allNodes[predecessors[currentNodeValue]];
-				currentNodeValue = currentNode->GetValue();
-			}
-			return path;
-		}
 
 		for (auto neighbor : adjancencyList[currentNodeValue])
 		{
@@ -160,6 +151,14 @@ std::vector<Node*> Graph::BreadthFirstSearch(Node* exitNode)
 		}
 		visited.pop();
 	}
+
+	std::vector<Node*> paths;
+	for (auto exitNode : exitNodes)
+	{
+		auto currentPath = Drum(predecessors, exitNode);
+		paths.insert(paths.end(), currentPath.begin(), currentPath.end());
+	}
+	return paths;
 }
 
 void Graph::InitAdjacencyList()

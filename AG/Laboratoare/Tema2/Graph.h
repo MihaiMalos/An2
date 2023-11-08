@@ -20,11 +20,11 @@ public:
 	float GetRadius() const;
 
 	void UpdateSize(QSize screenSize);
-	std::vector<Node*> ComputeMazePaths();
+	std::vector<Node*> BreadthFirstSearch();
 	
 private:
+	std::vector<Node*> Drum(std::vector<int> predecessors, Node* exitNode);
 	void Reset();
-	std::vector<Node*> BreadthFirstSearch(Node* exitNode);
 	void InitAdjacencyList();
 
 private:

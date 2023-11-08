@@ -1,0 +1,17 @@
+Baza de date vanzari:
+
+1. Afisarea listei de comenzi a unui client:
+
+select client.firma, comanda.data from client inner join comanda on client.client_id = comanda.client_id where client.firma = 'Lidl';
+
+2. Calcularea sumei pe care o are de achitat fiecare client:
+
+select client.firma, sum(comanda_produs.pret_total) from client inner join comanda on client.client_id = comanda.client_id inner join comanda_produs on comanda.comanda_id = comanda_produs.comanda_id group by client.firma;
+
+3. Afisarea listei de produse epuizate.
+
+select produs.nume, produs_depozit.cantitate from produs inner join produs_depozit on produs.prod_id=produs_depozit.prod_id and produs_depozit.cantitate=0;
+
+4. Afisarea listei de produse dintr-un depozit
+
+select produs.nume, produs_depozit.cantitate from produs inner join produs_depozit on produs.prod_id=prod_depozit.prod_id;
