@@ -34,6 +34,7 @@ void Tema1::on_topologicalSort_clicked()
 	Graph* newGraph = new Graph();
 
 	for (auto node : graph.getNodes())
+
 	{
 		newGraph->addNode(node);
 	}

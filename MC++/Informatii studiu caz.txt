@@ -1,0 +1,10 @@
+Pentru exemple: obiectiv, cod, ce face codul
+Declarare template: class daca are legatura doar cu o clasa, typename daca are legatura cu orice: https://www.youtube.com/watch?v=86Pa973BW4Y
+Performanta trebuie sustinuta printr-un exemplu (prin timer, cat ruleaza codul) -> poate fi luat in considerare si cazul de egalitate
+
+definitie modul, template + standardele fiecaruia
+cum se comporta template-ul in modul: de verificat pe clasa, functie
+
+cand are loc apelarea si instantierea
+
+de verificat mai intai compilarea, dupa care rularea

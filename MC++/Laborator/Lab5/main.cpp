@@ -1,10 +1,12 @@
-import <iostream>;
+import std;
 import piece;
+import board;
+
+using namespace quarto;
 
 int main()
 {
-	using namespace quarto;
-	Piece firstPiece(Piece::Body::Full, Piece::Color::Light, Piece::Height::Short, Piece::Shape::Square);
-	std::cout << firstPiece;
+	Board board;
+	std::cout << board;
 	return 0;
 }
