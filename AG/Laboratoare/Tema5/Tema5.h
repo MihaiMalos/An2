@@ -20,10 +20,13 @@ protected:
 private:
 	void InitMap();
 	void ToScreenCoordinates(QPointF& coordinates);
+	double EuclideanDistance(const QPointF& point1, const QPointF& point2);
 
 private:
 	Ui::Tema5Class ui;
 	Graph m_graph;
-	Node* m_selectedNode = nullptr;
+	Node* m_firstNodeSelected, *m_secondNodeSelected;
+	std::vector<Node*> m_nodesPath;
 	QPoint m_lowerBound, m_upperBound;
+	int kRadius;
 };

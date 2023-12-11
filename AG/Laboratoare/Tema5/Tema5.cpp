@@ -7,14 +7,16 @@
 
 Tema5::Tema5(QWidget *parent)
     : QMainWindow(parent)
+	, kRadius{5}
+	, m_firstNodeSelected{nullptr}
+	, m_secondNodeSelected{nullptr}
+	, m_nodesPath{std::vector<Node*>()}
 {
 	ui.setupUi(this);
 	ui.mainToolBar->deleteLater();
 	this->setAcceptDrops(true);
 
 	InitMap();
-	qDebug() << m_lowerBound << m_upperBound;
-	qDebug() << width() << height();
 }
 
 Tema5::~Tema5()
@@ -22,7 +24,42 @@ Tema5::~Tema5()
 
 void Tema5::mousePressEvent(QMouseEvent* event)
 {
+	Node* toSelect{nullptr};
+	if (event->button() == Qt::MiddleButton)
+	{
+		m_firstNodeSelected = nullptr;
+		m_secondNodeSelected = nullptr;
+		m_nodesPath = std::vector<Node*>();
+	}
+	if (event->button() == Qt::RightButton)
+	{
+		double minDistance = std::numeric_limits<double>::max();
+		for (const auto& node : m_graph.GetNodes())
+		{
+			QPointF coordinates = node->GetCoordinate();
+			ToScreenCoordinates(coordinates);
+			if (fabs(coordinates.x() - event->pos().x()) < 5 && fabs(coordinates.y() - event->pos().y()) < 5)
+			{
+				const auto& currentDistance = EuclideanDistance(coordinates, event->pos());
+				if (minDistance > currentDistance)
+				{
+					minDistance = currentDistance;
+					toSelect = node;
+				}
+			}
+		}
+		if (!toSelect || m_firstNodeSelected == toSelect) return;
 
+		if (!m_firstNodeSelected)
+		{
+			m_firstNodeSelected = toSelect;
+		}
+		else
+		{
+			m_secondNodeSelected = toSelect;
+			m_nodesPath = m_graph.DijkstraPath(m_firstNodeSelected, m_secondNodeSelected);
+		}
+	}
 	update();
 }
 
@@ -30,13 +67,40 @@ void Tema5::paintEvent(QPaintEvent* event)
 {
 
 	QPainter painter(this);
-	painter.setPen(Qt::black);
 
-	std::vector<Edge*> edges = m_graph.GetEdges();
-	for (auto edge : edges)
+	for (auto node : m_graph.GetNodes())
+	{
+		if (m_firstNodeSelected == node || m_secondNodeSelected == node)
+		{
+			QPointF coordinates(node->GetCoordinate());
+			ToScreenCoordinates(coordinates);
+			painter.setPen(Qt::red);
+			painter.setBrush(Qt::red);
+			QRect rect(coordinates.x() - kRadius, coordinates.y() - kRadius, 2 * kRadius, 2 * kRadius);
+			painter.drawEllipse(rect);
+
+		}
+	}
+
+	painter.setPen(Qt::black);
+	for (auto edge : m_graph.GetEdges())
 	{
 		QPointF firstNode(edge->GetFirstNode()->GetCoordinate());
 		QPointF secondNode(edge->GetSecondNode()->GetCoordinate());
+
+		ToScreenCoordinates(firstNode);
+		ToScreenCoordinates(secondNode);
+		painter.drawLine(firstNode, secondNode);
+	}
+
+	if (m_nodesPath.empty()) return;
+	QPen pen(Qt::red);
+	pen.setWidth(2);
+	painter.setPen(pen);
+	for (int index = 0; index < m_nodesPath.size() - 1; index++)
+	{
+		QPointF firstNode = m_nodesPath[index]->GetCoordinate();
+		QPointF secondNode = m_nodesPath[index+1]->GetCoordinate();
 
 		ToScreenCoordinates(firstNode);
 		ToScreenCoordinates(secondNode);
@@ -103,4 +167,11 @@ void Tema5::ToScreenCoordinates(QPointF& coordinates)
 
 	coordinates.setX((coordinates.x() - m_lowerBound.x()) * scaleFactorX);
 	coordinates.setY((coordinates.y() - m_lowerBound.y()) * scaleFactorY);
+}
+
+double Tema5::EuclideanDistance(const QPointF& point1, const QPointF& point2) {
+	double deltaX = point2.x() - point1.x();
+	double deltaY = point2.y() - point1.y();
+
+	return std::sqrt(deltaX * deltaX + deltaY * deltaY);
 }
