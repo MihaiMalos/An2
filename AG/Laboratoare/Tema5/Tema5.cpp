@@ -166,7 +166,7 @@ void Tema5::ToScreenCoordinates(QPointF& coordinates)
 	const auto& scaleFactorY = static_cast<double>(height()) / (m_upperBound.y() - m_lowerBound.y());
 
 	coordinates.setX((coordinates.x() - m_lowerBound.x()) * scaleFactorX);
-	coordinates.setY((coordinates.y() - m_lowerBound.y()) * scaleFactorY);
+	coordinates.setY((m_upperBound.y() - coordinates.y()) * scaleFactorY);
 }
 
 double Tema5::EuclideanDistance(const QPointF& point1, const QPointF& point2) {
