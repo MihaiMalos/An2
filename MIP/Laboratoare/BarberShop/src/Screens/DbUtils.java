@@ -35,7 +35,7 @@ public class DbUtils {
         }
     }
 
-    public static boolean CreateUser(String username, String password, String firstName, String lastName, String phoneNumber, boolean admin) {
+    public static boolean CreateUser(String username, String password, String firstName, String lastName, String phoneNumber, int roleId) {
         Connection connection = null;
         boolean result = true;
         String storedProcedureCall = "{CALL sp_RegisterUser(?, ?, ?, ?, ?, ?)}";
@@ -43,13 +43,57 @@ public class DbUtils {
             connection = GetConnection();
             CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
 
-            callableStatement.setInt(1, admin ? 1 : 2);
+            callableStatement.setInt(1, roleId);
             callableStatement.setString(2, username);
             callableStatement.setString(3, password);
             callableStatement.setString(4, firstName);
             callableStatement.setString(5, lastName);
             callableStatement.setString(6, phoneNumber);
 
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+        return result;
+    }
+
+    public static boolean UpdateUser(User user) {
+        Connection connection = null;
+        boolean result = true;
+        String storedProcedureCall = "{CALL sp_UpdateUser(?, ?, ?, ?, ?, ?)}";
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setInt(1, user.GetId());
+            callableStatement.setInt(2, user.getRole().GetId());
+            callableStatement.setString(3, user.getUsername());
+            callableStatement.setString(4, user.getFirstName());
+            callableStatement.setString(5, user.getLastName());
+            callableStatement.setString(6, user.getPhoneNumber());
+
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+        return result;
+    }
+
+    public static boolean DeleteUser(int id) {
+        Connection connection = null;
+        boolean result = true;
+        String storedProcedureCall = "{CALL sp_DeleteUser(?)}";
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setInt(1, id);
             callableStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,7 +151,7 @@ public class DbUtils {
                     Role userRole;
                     for (Role role : GetAllRoles())
                     {
-                        if (role.getRoleId() == resultSet.getInt("RoleId"))
+                        if (role.GetId() == resultSet.getInt("RoleId"))
                         {
                             User user = new User(
                                     resultSet.getInt("UserId"),

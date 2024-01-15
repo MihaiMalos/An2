@@ -62,7 +62,7 @@ class RegisterScreen extends JFrame {
                         firstNameField.getText(),
                         lastNameField.getText(),
                         phoneNumberField.getText(),
-                        false
+                        2
                         ))
                 {
                     JOptionPane.showMessageDialog(null, "User already exists");

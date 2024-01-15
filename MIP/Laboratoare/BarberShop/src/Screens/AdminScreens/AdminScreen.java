@@ -13,78 +13,78 @@ import java.util.List;
 
 public class AdminScreen extends JFrame {
     private EntityListScreen userListScreen, barberListScreen, serviceListScreen;
+    private final JTabbedPane tabbedPane;
     public AdminScreen() {
         setTitle("BarberShop Admin");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
 
         List<String> columnNames = new ArrayList<String>();
 
-        userListScreen = User.GetUserListScreen(DbUtils.GetAllUsers(true));
-        barberListScreen = Barber.GetBarberListScreen(DbUtils.GetAllBarbers(true));
-        serviceListScreen = Service.GetServiceListScreen(DbUtils.GetAllServices(true));
+        userListScreen = new EntityListScreen(EEntity.USER);
+        barberListScreen = new EntityListScreen(EEntity.BARBER);
+        serviceListScreen = new EntityListScreen(EEntity.SERVICE);
 
         tabbedPane.addTab("Users", userListScreen);
         tabbedPane.addTab("Barbers", barberListScreen);
         tabbedPane.addTab("Services", serviceListScreen);
         tabbedPane.addTab("Appointments", null);
 
+        SetCallbacks();
         ChangeListener changeListener = changeEvent -> {
             JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-            int index = sourceTabbedPane.getSelectedIndex();
-                switch (index) {
-                case 0 -> userListScreen = User.GetUserListScreen(DbUtils.GetAllUsers(true));
-                case 1 -> barberListScreen = Barber.GetBarberListScreen(DbUtils.GetAllBarbers(true));
-                case 2 -> serviceListScreen = Service.GetServiceListScreen(DbUtils.GetAllServices(true));
-            };
+            UpdatePane(sourceTabbedPane);
+
         };
         tabbedPane.addChangeListener(changeListener);
         add(tabbedPane);
 
-        SetListeners();
-
-
         setVisible(true);
     }
 
-    private void SetListeners() {
-        userListScreen.addEntityActionListener(new EntityActionListener() {
-            @Override
-            public void onDelete(List<List<String>> data) {
-                System.out.println(data);
+    void UpdatePane(JTabbedPane pane) {
+        int index = pane.getSelectedIndex();
+        switch (index) {
+            case 0 -> {
+                userListScreen = new EntityListScreen(EEntity.USER);
+                pane.setComponentAt(index, userListScreen);
             }
+            case 1 -> {
+                barberListScreen = new EntityListScreen(EEntity.BARBER);
+                pane.setComponentAt(index, barberListScreen);
+            }
+            case 2 -> {
+                serviceListScreen = new EntityListScreen(EEntity.SERVICE);
+                pane.setComponentAt(index, serviceListScreen);
+            }
+        };
+        SetCallbacks();
+    }
 
+    void SetCallbacks() {
+        userListScreen.SetCallback(new EntityListCallback() {
             @Override
-            public void onAdd(int[] data) {
-
+            public void EntityUpdated() {
+                UpdatePane(tabbedPane);
             }
         });
 
-        barberListScreen.addEntityActionListener(new EntityActionListener() {
+        barberListScreen.SetCallback(new EntityListCallback() {
             @Override
-            public void onDelete(List<List<String>> data) {
-                System.out.println(data);
-            }
-
-            @Override
-            public void onAdd(int[] data) {
-
+            public void EntityUpdated() {
+                UpdatePane(tabbedPane);
             }
         });
 
-        serviceListScreen.addEntityActionListener(new EntityActionListener() {
+        serviceListScreen.SetCallback(new EntityListCallback() {
             @Override
-            public void onDelete(List<List<String>> data) {
-                System.out.println(data);
-            }
-
-            @Override
-            public void onAdd(int[] data) {
-
+            public void EntityUpdated() {
+                UpdatePane(tabbedPane);
             }
         });
     }
+
 }

@@ -1,6 +1,9 @@
 package Models;
 
-public class Role {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Role implements Entity {
     private int roleId;
     private String roleName;
 
@@ -8,8 +11,13 @@ public class Role {
         this.roleId = roleId;
         this.roleName = roleName;
     }
+    public static List<String> GetRoleListColumns() {
+        List<String> columns = new ArrayList<String>();
+        columns.add("Role Name");
 
-    public int getRoleId() {
+        return columns;
+    }
+    public int GetId() {
         return roleId;
     }
 

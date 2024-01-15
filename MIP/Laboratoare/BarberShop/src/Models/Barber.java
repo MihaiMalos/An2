@@ -5,7 +5,7 @@ import Screens.AdminScreens.EntityListScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Barber {
+public class Barber implements Entity {
     private int barberId;
     private String firstName, lastName, phoneNumber;
     private boolean active;
@@ -18,17 +18,6 @@ public class Barber {
         this.active = active;
     }
 
-    public static EntityListScreen GetBarberListScreen(List<Barber> barbersList) {
-        List<List<String>> tableData = new ArrayList<List<String>>();
-        for (Barber barber : barbersList) {
-            List<String> currentBarber = new ArrayList<String>();
-            currentBarber.add(barber.getFirstName());
-            currentBarber.add(barber.getLastName());
-            currentBarber.add(String.valueOf(barber.getPhoneNumber()));
-            tableData.add(currentBarber);
-        }
-        return new EntityListScreen(GetBarberListColumns(), tableData);
-    }
     public static List<String> GetBarberListColumns() {
         List<String> columns = new ArrayList<String>();
         columns.add("First Name");
@@ -38,7 +27,7 @@ public class Barber {
         return columns;
     }
 
-    public int getBarberId() {
+    public int GetId() {
         return barberId;
     }
 

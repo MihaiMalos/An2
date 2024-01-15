@@ -2,7 +2,7 @@ package Models;
 
 import java.util.Date;
 
-public class Appointment {
+public class Appointment{
     User user;
     Barber barber;
     Service service;

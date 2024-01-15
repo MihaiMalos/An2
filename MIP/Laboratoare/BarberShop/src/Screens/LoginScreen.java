@@ -51,11 +51,11 @@ public class LoginScreen extends JFrame {
                 String password = Arrays.toString(passwordField.getPassword());
                 User user = DbUtils.GetAuthenticatedUser(username, password);
                 if (user != null) {
-                    if (user.getRole().getRoleId() == 1) {
+                    if (user.getRole().GetId() == 1) {
                         dispose();
                         new AdminScreen();
                     }
-                    else if(user.getRole().getRoleId() == 2) {
+                    else if(user.getRole().GetId() == 2) {
                         dispose();
                         new UserScreen();
                     }

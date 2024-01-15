@@ -6,22 +6,12 @@ import Screens.DbUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service {
+public class Service implements Entity {
     private int serviceId;
     private String serviceName;
     private double price;
     private boolean active;
 
-    public static EntityListScreen GetServiceListScreen(List<Service> servicesList) {
-        List<List<String>> tableData = new ArrayList<List<String>>();
-        for (Service service : servicesList) {
-            List<String> currentUser = new ArrayList<String>();
-            currentUser.add(service.getServiceName());
-            currentUser.add(String.valueOf(service.getPrice()));
-            tableData.add(currentUser);
-        }
-        return new EntityListScreen(GetServiceListColumns(), tableData);
-    }
     public static List<String> GetServiceListColumns() {
         List<String> columns = new ArrayList<String>();
         columns.add("Service");
@@ -36,7 +26,7 @@ public class Service {
         this.active = active;
     }
 
-    public int getServiceId() {
+    public int GetId() {
         return serviceId;
     }
 

@@ -5,11 +5,12 @@ import Screens.AdminScreens.EntityListScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Entity{
     private int userId;
     private Role role;
     private String username, password, firstName, lastName, phoneNumber;
     private boolean active;
+    public User() {}
     public User(int userId, Role role, String username, String password, String firstName, String lastName, String phoneNumber, boolean active) {
         this.userId = userId;
         this.role = role;
@@ -21,19 +22,7 @@ public class User {
         this.active = active;
     }
 
-    public static EntityListScreen GetUserListScreen(List<User> userList) {
-        List<List<String>> tableData = new ArrayList<List<String>>();
-        for (User user : userList) {
-            List<String> currentUser = new ArrayList<String>();
-            currentUser.add(user.getUsername());
-            currentUser.add(user.getFirstName());
-            currentUser.add(user.getLastName());
-            currentUser.add(user.getPhoneNumber());
-            currentUser.add(user.getRole().getRoleName());
-            tableData.add(currentUser);
-        }
-        return new EntityListScreen(GetUserListColumns(), tableData);
-    }
+
     public static List<String> GetUserListColumns() {
         List<String> columns = new ArrayList<String>();
         columns.add("Username");
@@ -90,9 +79,7 @@ public class User {
         this.role = role;
     }
 
-    public int getUserId() {
-        return userId;
-    }
+    public int GetId() {return userId;}
 
     public void setUserId(int userId) {
         this.userId = userId;
