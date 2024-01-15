@@ -527,26 +527,26 @@ int main(int argc, char** argv)
 		glBindTexture(GL_TEXTURE_2D, grassTexture);
 
 
-		for (float row = -4.5f; row <= 4.5f; row += 0.5f)
+		for (float row = -50.f; row <= 50.f; row += 0.5f)
 		{
-			for (float column = -4.5f; column <= 4.5f; column += 0.5f)
+			for (float column = -50.f; column <= 50.f; column += 0.5f)
 			{
 				glm::vec3 currentPos = glm::vec3(row, 0.0f, column);
 				glm::mat4 worldTransf = glm::translate(glm::mat4(1.0), currentPos);
 				shaderBlending.SetMat4("model", worldTransf);
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 
-				worldTransf = glm::rotate(worldTransf, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-				shaderBlending.SetMat4("model", worldTransf);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
+				//worldTransf = glm::rotate(worldTransf, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+				//shaderBlending.SetMat4("model", worldTransf);
+				//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-				worldTransf = glm::rotate(worldTransf, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-				shaderBlending.SetMat4("model", worldTransf);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
+				//worldTransf = glm::rotate(worldTransf, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+				//shaderBlending.SetMat4("model", worldTransf);
+				//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-				worldTransf = glm::rotate(worldTransf, glm::radians(135.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-				shaderBlending.SetMat4("model", worldTransf);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
+				//worldTransf = glm::rotate(worldTransf, glm::radians(135.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+				//shaderBlending.SetMat4("model", worldTransf);
+				//glDrawArrays(GL_TRIANGLES, 0, 6);
 			}
 		}
 

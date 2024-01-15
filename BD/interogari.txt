@@ -1,0 +1,76 @@
+Interogari simple:
+1. Numele tuturor artistilor care incep cu 'M'
+R: select name from artist where name like 'M%';
+
+2. Sa se afiseze in ordine crescatoare in functie de data lansarii, toate albumele
+R: select * from album order by data_lansare;
+
+3. Sa se afiseze toate playlist-urile cu numele 'Rockereala'
+R: select * from playlist where nume = 'Rockereala';
+
+4. Numarul total de utilizatori
+R: select count(*) as numar_total_utilizatori from utilizator;
+
+5. Sa se afiseze cea mai veche melodie lansata
+R: select * from melodie order by data_lansare limit 1;
+
+6. Sa se afiseze toate melodiile care incep cu L si se termina cu r
+R: select * from melodie where nume LIKE 'L%' and nume LIKE '%r';
+
+7. Sa se afiseze toti artistii care contin e in nume
+R: select * from artist where name LIKE '%e%';
+
+8. Sa se afiseze toate melodiile care contin numere in numele lor
+R: select * from melodie where nume ~ '\d';
+
+9. Sa se afiseze cate genuri muzicale exista in baza de date
+R: select count(*) from gen_muzical;
+
+10. Sa se afiseze mail-ul user-ului cu numele 'Marcel'
+R: select username, email from utilizator where username = 'Marcel';
+
+Interogari complexe:
+
+1. Sa se afiseze toate playlist-urile utilizatorului cu numele 'Ivan Cosmin'
+R: select * from playlist where utilizator_id = (select utilizator_id from utilizator where username = 'Ivan Cosmin');
+
+2. Sa se afiseze cel mai urmarit artist
+R: select artist.name, count(artist.name) from artist inner join urmaritori on artist.artist_id = urmaritori.artist_id group by artist.name order by count(artist.name) desc limit 1;
+
+3. Sa se afiseze albumul cu cele mai multe melodii
+R: select album.name, count(album.name) from melodie inner join album on (melodie.album_id = album.album_id) group by album.name order by count desc limit 1;
+
+4. Sa se afiseze toti artistii asociati cu genul muzical 'rock'
+R: select artist.name from artist inner join (genuri_artisti inner join gen_muzical on genuri_artisti.gen_id = gen_muzical.gen_id) on artist.artist_id = genuri_artisti.artist_id where gen_muzical.nume = 'rock';
+
+5. Sa se afiseze in ordine descrescatoare artistii cu cele mai multe albume
+R: select artist.name, count(artist.artist_id) from album inner join artist on (artist.artist_id = album.artist_id) group by artist.artist_id order by count desc;
+
+6. Sa se afiseze toate melodiile de pe albumul 'Orasul 511'
+R: select nume from melodie where album_id = (select album_id from album where name = 'Orasul 511');
+
+7. Sa se afiseze toate melodiile cu genul muzical 'pop'
+R: select melodie.nume from melodie inner join (genuri_melodii inner join gen_muzical on genuri_melodii.gen_id = gen_muzical.gen_id) on melodie.melodie_id = genuri_melodii.melodie_id where gen_muzical.nume = 'pop';
+
+8. Sa se afiseze toate numele melodiilor din playlist-ul utilizatorului 'Ivan Cosmin' cu numele 'Rockereala'
+R: select melodie.nume from melodie inner join (playlist_melodie inner join (playlist inner join utilizator on (utilizator.utilizator_id = playlist.utilizator_id)) on (playlist_melodie.playlist_id = playlist.playlist_id)) on (melodie.melodie_id = playlist_melodie.melodie_id) where utilizator.username = 'Ivan Cosmin' AND playlist.nume = 'Rockereala';
+
+9. Sa se afiseze cine a scris melodia 'eine Kleine Nachtmusik'
+R: select name from artist where artist_id = ( select artist_id from melodie_artist where melodie_id = (select melodie_id from melodie where nume = 'eine Kleine Nachtmusik'));
+R: select artist.name from artist inner join (melodie_artist inner join melodie on (melodie.melodie_id = melodie_artist.melodie_id)) on (melodie_artist.artist_id = artist.artist_id) where melodie.nume = 'eine Kleine Nachtmusik';
+
+10. Sa se afiseze toti utilizatorii care o urmaresc pe Delia
+R: select utilizator.username from artist inner join (utilizator inner join urmaritori on (utilizator.utilizator_id = urmaritori.utilizator_id)) on (artist.artist_id = urmaritori.artist_id) where artist.name = 'Delia';
+
+View-uri:
+1. urmaritori_delia 
+R: create view urmaritori_delia as (select utilizator.username from artist inner join (utilizator inner join urmaritori on (utilizator.utilizator_id = urmaritori.utilizator_id)) on (artist.artist_id = urmaritori.artist_id) where artist.name = 'Delia');
+
+2. album_top_melodii
+R: create view album_top_melodii as (select album.name, count(album.name) from melodie inner join album on (melodie.album_id = album.album_id) group by album.name order by count desc limit 1);
+
+3. numar_utilizatori
+R: create view numar_utilizatori as (select count(*) as numar_total_utilizatori from utilizator);
+
+4.  numar_genuri
+R: create view numar_genuri as (select count(*) from gen_muzical);
