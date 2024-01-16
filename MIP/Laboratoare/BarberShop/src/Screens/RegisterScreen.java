@@ -33,12 +33,12 @@ class RegisterScreen extends JFrame {
         passwordField = new JPasswordField();
         retypePasswordField = new JPasswordField();
 
-        InitTextField("First Name", firstNameField, 0);
-        InitTextField("Last Name", lastNameField, 1);
-        InitTextField("Phone", phoneNumberField, 2);
-        InitTextField("Username", usernameField, 3);
-        InitTextField("Password", passwordField, 4);
-        InitTextField("Retype Password", retypePasswordField, 5);
+        InitField("First Name", firstNameField, 0);
+        InitField("Last Name", lastNameField, 1);
+        InitField("Phone", phoneNumberField, 2);
+        InitField("Username", usernameField, 3);
+        InitField("Password", passwordField, 4);
+        InitField("Retype Password", retypePasswordField, 5);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -75,22 +75,14 @@ class RegisterScreen extends JFrame {
             }
         });
     }
-    private void InitTextField(String text, Object field, int y) {
+    private void InitField(String text, Component field, int y) {
         JLabel label = new JLabel(text + ":");
         gbc.gridx = 0;
         gbc.gridy = y;
         panel.add(label, gbc);
 
         gbc.gridx = 1;
-        if (field instanceof JTextField) {
-            JTextField textField = (JTextField) field;
-            textField.setPreferredSize(new Dimension(200, 25));
-            panel.add(textField, gbc);
-        }
-        else if (field instanceof JPasswordField) {
-            JPasswordField passField = (JPasswordField)  field;
-            passField.setPreferredSize(new Dimension(200, 25));
-            panel.add(passField, gbc);
-        }
+        field.setPreferredSize(new Dimension(200, 25));
+        panel.add(field, gbc);
     }
 }

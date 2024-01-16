@@ -19,6 +19,7 @@ public class Service implements Entity {
 
         return columns;
     }
+    public Service() {}
     public Service(int serviceId, String serviceName, double price, boolean active) {
         this.serviceId = serviceId;
         this.serviceName = serviceName;

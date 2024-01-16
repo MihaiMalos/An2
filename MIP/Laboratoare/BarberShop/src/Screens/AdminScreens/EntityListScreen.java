@@ -3,6 +3,9 @@ package Screens.AdminScreens;
 import Models.Barber;
 import Models.Service;
 import Models.User;
+import Screens.AdminScreens.Enums.EEntity;
+import Screens.AdminScreens.Interfaces.EntityListCallback;
+import Screens.AdminScreens.Interfaces.ViewEntityCallback;
 import Screens.DbUtils;
 
 import javax.swing.*;
@@ -12,16 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-enum EEntity {
-    USER,
-    BARBER,
-    SERVICE,
-}
-
-interface EntityListCallback {
-    void EntityUpdated();
-}
 
 public class EntityListScreen extends JPanel {
     private JTable table;
@@ -84,48 +77,114 @@ public class EntityListScreen extends JPanel {
     }
 
     private void UpdateEntity() {
-        if (entityType == EEntity.USER) {
             remove(entityViewScreen);
-            User currentUser = new User();
+        switch(entityType) {
 
-            if (table.getSelectedRowCount() > 0) {
-                String selectedRowUsername = table.getValueAt(table.getSelectedRow(), 0).toString();
-
-                for (User user : DbUtils.GetAllUsers(true)) {
-                    if (selectedRowUsername.equals(user.getUsername()))
-                        currentUser = user;
-                }
-            }
-
-            entityViewScreen = new ViewEntityScreen(currentUser);
-            add(entityViewScreen, BorderLayout.SOUTH);
-
-            entityViewScreen.SetCallback(new ViewEntityCallback() {
-                @Override
-                public void PanelEnded() {
-                    remove(entityViewScreen);
-                    callback.EntityUpdated();
-                    updateUI();
-                }
-            });
+            case USER -> UpdateUser();
+            case BARBER -> UpdateBarber();
+            case SERVICE -> UpdateService();
         }
+        add(entityViewScreen, BorderLayout.SOUTH);
+        entityViewScreen.SetCallback(new ViewEntityCallback() {
+            @Override
+            public void PanelEnded() {
+                remove(entityViewScreen);
+                callback.EntityUpdated();
+                updateUI();
+            }
+        });
+    }
+
+    private void UpdateUser() {
+        User currentUser = new User();
+        if (table.getSelectedRowCount() > 0) {
+            String selectedRowUsername = table.getValueAt(table.getSelectedRow(), 0).toString();
+
+            for (User user : DbUtils.GetAllUsers(true)) {
+                if (selectedRowUsername.equals(user.getUsername()))
+                    currentUser = user;
+            }
+        }
+
+        entityViewScreen = new ViewEntityScreen(currentUser);
+    }
+
+    private void UpdateBarber() {
+        Barber currentBarber = new Barber();
+        if (table.getSelectedRowCount() > 0) {
+            String selectedRowName = table.getValueAt(table.getSelectedRow(), 0).toString()
+                                   + table.getValueAt(table.getSelectedRow(), 1).toString();
+
+            for (Barber barber : DbUtils.GetAllBarbers(true)) {
+                if (selectedRowName.equals(barber.getFirstName() + barber.getLastName()))
+                    currentBarber = barber;
+            }
+        }
+
+        entityViewScreen = new ViewEntityScreen(currentBarber);
+    }
+
+    private void UpdateService() {
+        Service currentService = new Service();
+        if (table.getSelectedRowCount() > 0) {
+            String selectedRowName = table.getValueAt(table.getSelectedRow(), 0).toString();
+
+            for (Service service : DbUtils.GetAllServices(true)) {
+                if (selectedRowName.equals(service.getServiceName()))
+                    currentService = service;
+            }
+        }
+
+        entityViewScreen = new ViewEntityScreen(currentService);
     }
 
     private void DeleteEntity() {
         if (table.getSelectedRowCount() > 0) {
-            List<String> selectedRowsUsers = new ArrayList<>();
+            switch(entityType) {
 
+                case USER -> DeleteUser();
+                case BARBER -> DeleteBarber();
+                case SERVICE -> DeleteService();
+            }
+            callback.EntityUpdated();
+        }
+    }
+    private void DeleteUser() {
             for (int row : table.getSelectedRows())
             {
                 String rowUser = table.getValueAt(row, 0).toString();
                 for (User user : DbUtils.GetAllUsers(true)) {
                     if (rowUser.equals(user.getUsername())) {
-                        DbUtils.DeleteUser(user.GetId());
+                        DbUtils.DeleteEntity(user.GetId(), EEntity.USER);
                         break;
                     }
                 }
+        }
+    }
+    private void DeleteBarber() {
+        for (int row : table.getSelectedRows())
+        {
+            String barberName = table.getValueAt(row, 0).toString()
+                              + table.getValueAt(row, 1).toString();
+            for (Barber barber : DbUtils.GetAllBarbers(true)) {
+                if (barberName.equals(barber.getFirstName() + barber.getLastName())) {
+                    DbUtils.DeleteEntity(barber.GetId(), EEntity.BARBER);
+                    break;
+                }
             }
-            callback.EntityUpdated();
+        }
+    }
+
+    private void DeleteService() {
+        for (int row : table.getSelectedRows())
+        {
+            String serviceName = table.getValueAt(row, 0).toString();
+            for (Service service : DbUtils.GetAllServices(true)) {
+                if (serviceName.equals(service.getServiceName())) {
+                    DbUtils.DeleteEntity(service.GetId(), EEntity.SERVICE);
+                    break;
+                }
+            }
         }
     }
     public void RefreshTable() {

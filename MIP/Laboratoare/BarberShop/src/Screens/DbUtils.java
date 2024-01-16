@@ -4,6 +4,7 @@ import Models.Barber;
 import Models.Role;
 import Models.Service;
 import Models.User;
+import Screens.AdminScreens.Enums.EEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -60,7 +61,50 @@ public class DbUtils {
         return result;
     }
 
-    public static boolean UpdateUser(User user) {
+    public static boolean CreateBarber(String firstName, String lastName, String phoneNumber) {
+        Connection connection = null;
+        String storedProcedureCall = "{CALL sp_RegisterBarber(?, ?, ?)}";
+        boolean result = true;
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setString(1, firstName);
+            callableStatement.setString(2, lastName);
+            callableStatement.setString(3, phoneNumber);
+
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+        return result;
+    }
+
+    public static boolean CreateService(String serviceName, Double price) {
+        Connection connection = null;
+        String storedProcedureCall = "{CALL sp_RegisterService(?, ?)}";
+        boolean result = true;
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setString(1, serviceName);
+            callableStatement.setDouble(2, price);
+
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+        return result;
+    }
+
+    public static void UpdateUser(User user) {
         Connection connection = null;
         boolean result = true;
         String storedProcedureCall = "{CALL sp_UpdateUser(?, ?, ?, ?, ?, ?)}";
@@ -82,13 +126,59 @@ public class DbUtils {
         } finally {
             CloseConnection(connection);
         }
-        return result;
     }
 
-    public static boolean DeleteUser(int id) {
+    public static void UpdateBarber(Barber barber) {
         Connection connection = null;
         boolean result = true;
-        String storedProcedureCall = "{CALL sp_DeleteUser(?)}";
+        String storedProcedureCall = "{CALL sp_UpdateBarber(?, ?, ?, ?)}";
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setInt(1, barber.GetId());
+            callableStatement.setString(2, barber.getFirstName());
+            callableStatement.setString(3, barber.getLastName());
+            callableStatement.setString(4, barber.getPhoneNumber());
+
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+    }
+
+    public static void UpdateService(Service service) {
+        Connection connection = null;
+        boolean result = true;
+        String storedProcedureCall = "{CALL sp_UpdateService(?, ?, ?)}";
+        try {
+            connection = GetConnection();
+            CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
+
+            callableStatement.setInt(1, service.GetId());
+            callableStatement.setString(2, service.getServiceName());
+            callableStatement.setDouble(3, service.getPrice());
+
+            callableStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            CloseConnection(connection);
+        }
+    }
+
+    public static void DeleteEntity(int id, EEntity entityType) {
+        Connection connection = null;
+        boolean result = true;
+        String storedProcedureCall = switch (entityType) {
+            case USER -> "{CALL sp_DeleteUser(?)}";
+            case BARBER ->  "{CALL sp_DeleteBarber(?)}";
+            case SERVICE -> "{CALL sp_DeleteService(?)}";
+        };
         try {
             connection = GetConnection();
             CallableStatement callableStatement = connection.prepareCall(storedProcedureCall);
@@ -101,7 +191,6 @@ public class DbUtils {
         } finally {
             CloseConnection(connection);
         }
-        return result;
     }
 
     public static User GetAuthenticatedUser(String username, String password)
@@ -184,7 +273,7 @@ public class DbUtils {
             ResultSet resultSet = statement.executeQuery("sp_SelectAllServices");
 
             while (resultSet.next()) {
-                if (resultSet.getBoolean("Active") || activeOnly) {
+                if (resultSet.getBoolean("Active") || !activeOnly) {
                     Service service = new Service(
                             resultSet.getInt("ServiceId"),
                             resultSet.getString("ServiceName"),
@@ -203,7 +292,7 @@ public class DbUtils {
 
     public static List<Barber> GetAllBarbers(boolean activeOnly)
     {
-        List<Barber> serviceList = new ArrayList<>();
+        List<Barber> barberList = new ArrayList<>();
         Connection connection = null;
         try {
             connection = GetConnection();
@@ -211,22 +300,22 @@ public class DbUtils {
             ResultSet resultSet = statement.executeQuery("sp_SelectAllBarbers");
 
             while (resultSet.next()) {
-                if (resultSet.getBoolean("Active") || activeOnly) {
-                    Barber service = new Barber(
+                if (resultSet.getBoolean("Active") || !activeOnly) {
+                    Barber barber = new Barber(
                             resultSet.getInt("BarberId"),
                             resultSet.getString("FirstName"),
                             resultSet.getString("LastName"),
                             resultSet.getString("PhoneNumber"),
                             resultSet.getBoolean("Active")
                     );
-                    serviceList.add(service);
+                    barberList.add(barber);
                 }
             }
 
         } catch(SQLException e) {
             e.printStackTrace();
         }
-        return serviceList;
+        return barberList;
     }
 
 }

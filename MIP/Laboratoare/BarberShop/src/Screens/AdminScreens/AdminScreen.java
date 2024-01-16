@@ -1,12 +1,9 @@
 package Screens.AdminScreens;
 
-import Models.Barber;
-import Models.Service;
-import Models.User;
-import Screens.DbUtils;
+import Screens.AdminScreens.Enums.EEntity;
+import Screens.AdminScreens.Interfaces.EntityListCallback;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.List;

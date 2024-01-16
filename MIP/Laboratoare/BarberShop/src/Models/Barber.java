@@ -10,6 +10,7 @@ public class Barber implements Entity {
     private String firstName, lastName, phoneNumber;
     private boolean active;
 
+    public Barber() {}
     public Barber(int barberId, String firstName, String lastName, String phoneNumber, boolean active) {
         this.barberId = barberId;
         this.firstName = firstName;
