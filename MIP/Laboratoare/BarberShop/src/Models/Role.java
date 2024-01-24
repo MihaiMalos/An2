@@ -32,4 +32,5 @@ public class Role implements Entity {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+    public String toString() { return roleName; }
 }

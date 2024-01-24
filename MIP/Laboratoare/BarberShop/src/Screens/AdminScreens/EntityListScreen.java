@@ -140,11 +140,17 @@ public class EntityListScreen extends JPanel {
 
     private void DeleteEntity() {
         if (table.getSelectedRowCount() > 0) {
-            switch(entityType) {
 
-                case USER -> DeleteUser();
-                case BARBER -> DeleteBarber();
-                case SERVICE -> DeleteService();
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to proceed?",
+                    "Confirmation", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                switch (entityType) {
+
+                    case USER -> DeleteUser();
+                    case BARBER -> DeleteBarber();
+                    case SERVICE -> DeleteService();
+                }
             }
             callback.EntityUpdated();
         }

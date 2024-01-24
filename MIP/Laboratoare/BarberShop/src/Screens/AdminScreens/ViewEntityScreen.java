@@ -43,10 +43,8 @@ public class ViewEntityScreen extends JPanel {
         JButton update = new JButton("Update");
         JButton cancel = new JButton("Cancel");
 
-        List<String> rolesName = new ArrayList<String>();
-        for (Role role : DbUtils.GetAllRoles()) { rolesName.add(role.getRoleName()); }
-        String[] finalRoles = rolesName.toArray(new String[0]);
-        JComboBox<String> roles = new JComboBox<>(finalRoles);
+        Role[] rolesItems = DbUtils.GetAllRoles().toArray(new Role[0]);
+        JComboBox<Role> roles = new JComboBox<>(rolesItems);
 
         InitField("Username", username, 0);
         InitField("First Name", firstName, 1);
@@ -62,24 +60,19 @@ public class ViewEntityScreen extends JPanel {
             firstName.setText(user.getFirstName());
             lastName.setText(user.getLastName());
             phoneNumber.setText(user.getPhoneNumber());
-            roles.setSelectedItem(user.getRole().getRoleName());
+            roles.setSelectedIndex(user.getRole().GetId()-1);
         } else {
             InitField("Password", password, 5);
         }
-
         update.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                     user.setUsername(username.getText());
                     user.setFirstName(firstName.getText());
                     user.setLastName(lastName.getText());
                     user.setPhoneNumber(phoneNumber.getText());
-
-                    for (Role role : DbUtils.GetAllRoles()) {
-                        if (roles.getSelectedItem().equals(role.getRoleName())) {
-                            user.setRole(role);
-                        }
-                    }
+                    user.setRole( (Role) roles.getSelectedItem() ) ;
 
                 if (user.GetId() != 0) {
                     DbUtils.UpdateUser(user);
