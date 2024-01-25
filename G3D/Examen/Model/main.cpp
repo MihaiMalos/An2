@@ -146,15 +146,15 @@ int main()
 	/*height /= 2.0f;*/
 
 	float vertices[] = {
-	-width,      0,        -length,
-	 width,      0,        -length,
-	-width,      0,         length,
-	 width,      0,         length,
+	-width,      0,        -length,  0,  1,  0,
+	 width,      0,        -length,  0,  1,  0,
+	-width,      0,         length,  0,  1,  0,
+	 width,      0,         length,  0,  1,  0,
 
-	-width,    height,     -length,
-	 width,    height,     -length,
-	-width,    height,      length,
-	 width,    height,      length,
+	-width,    height,     -length,  0,  1,  0,
+	 width,    height,     -length,	 0,  1,  0,
+	-width,    height,      length,	 0,  1,  0,
+	 width,    height,      length,	 0,  1,  0,
 	};
 
 	unsigned int indices[] = {
@@ -198,8 +198,10 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Set vertex attribute pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 
 
@@ -211,9 +213,8 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
 	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 
 	// Create camera
 	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 0.0, 3.0));
@@ -221,8 +222,9 @@ int main()
 	Shader lightingShader("PhongLight.vs", "PhongLight.fs");
 	Shader lampShader("Lamp.vs", "Lamp.fs");
 
-	// render loop
+	
 
+	// render loop
 	while (!glfwWindowShouldClose(window)) {
 
 		// per-frame time logic
@@ -279,21 +281,16 @@ int main()
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 
 		glfwSwapBuffers(window);
-
 		glfwPollEvents();
-
 	}
 
 	Cleanup();
 
 	glDeleteVertexArrays(1, &VAO);
-
 	glDeleteVertexArrays(1, &lightVAO);
-
 	glDeleteBuffers(1, &VBO);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources
-
 	glfwTerminate();
 
 	return 0;
