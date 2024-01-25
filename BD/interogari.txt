@@ -34,6 +34,7 @@ Interogari complexe:
 1. Sa se afiseze toate playlist-urile utilizatorului cu numele 'Ivan Cosmin'
 R: select * from playlist where utilizator_id = (select utilizator_id from utilizator where username = 'Ivan Cosmin');
 
+
 2. Sa se afiseze cel mai urmarit artist
 R: select artist.name, count(artist.name) from artist inner join urmaritori on artist.artist_id = urmaritori.artist_id group by artist.name order by count(artist.name) desc limit 1;
 
@@ -58,6 +59,11 @@ R: select melodie.nume from melodie inner join (playlist_melodie inner join (pla
 9. Sa se afiseze cine a scris melodia 'eine Kleine Nachtmusik'
 R: select name from artist where artist_id = ( select artist_id from melodie_artist where melodie_id = (select melodie_id from melodie where nume = 'eine Kleine Nachtmusik'));
 R: select artist.name from artist inner join (melodie_artist inner join melodie on (melodie.melodie_id = melodie_artist.melodie_id)) on (melodie_artist.artist_id = artist.artist_id) where melodie.nume = 'eine Kleine Nachtmusik';
+
+select artist.name from artist 
+inner join melodie_artist on melodie_artist.artist_id = artist.artist_id
+inner join melodie on melodie_artist.melodie_id = melodie.melodie_id
+where melodie.nume = 'eine Kleine Nachtmusik';
 
 10. Sa se afiseze toti utilizatorii care o urmaresc pe Delia
 R: select utilizator.username from artist inner join (utilizator inner join urmaritori on (utilizator.utilizator_id = urmaritori.utilizator_id)) on (artist.artist_id = urmaritori.artist_id) where artist.name = 'Delia';

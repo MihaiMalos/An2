@@ -33,6 +33,7 @@ GLuint ProjMatrixLocation, ViewMatrixLocation, WorldMatrixLocation;
 Camera* pCamera = nullptr;
 
 void Cleanup()
+
 {
 
 	delete pCamera;
@@ -49,49 +50,17 @@ void processInput(GLFWwindow* window);
 double deltaTime = 0.0f;        // time between current frame and last frame
 double lastFrame = 0.0f;
 
-double objectHeight = 1.0f;
-glm::vec3 objectPos = glm::vec3(0, -0.5, 0);
-glm::vec3 objectScale = glm::vec3(0.3f);
-bool xrotation = false, yrotation = false, zrotation = false;
-double lampCircleRadius = 0.5f;
-
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 
 {
 
-	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-	{
-		objectHeight *= 2;
-	}
-	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-	{
-		objectHeight /= 2;
-	}
+	if (key == GLFW_KEY_A && action == GLFW_PRESS)
 
-	if (key == GLFW_KEY_EQUAL && action == GLFW_PRESS)
 	{
-		objectScale *= 2;
-	}
-	if (key == GLFW_KEY_MINUS && action == GLFW_PRESS)
-	{
-		objectScale /= 2;
-	}
 
-	if (key == GLFW_KEY_X && action == GLFW_PRESS)
-	{
-		xrotation = !xrotation;
-	}
-	if (key == GLFW_KEY_Y && action == GLFW_PRESS)
-	{
-		yrotation = !yrotation;
-	}
-	if (key == GLFW_KEY_Z && action == GLFW_PRESS)
-	{
-		zrotation = !zrotation;
 	}
 
 }
-
 
 int main()
 
@@ -139,86 +108,97 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
-	float width = 5, length = 7, height = 1;
-
-	width /= 2.0f;
-	length /= 2.0f;
-	/*height /= 2.0f;*/
-
 	float vertices[] = {
-	-width,      0,        -length,
-	 width,      0,        -length,
-	-width,      0,         length,
-	 width,      0,         length,
 
-	-width,    height,     -length,
-	 width,    height,     -length,
-	-width,    height,      length,
-	 width,    height,      length,
-	};
+	   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	   0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	   0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	   0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	   -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	   0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	   0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	   0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	   -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 
-	unsigned int indices[] = {
-		0,1,3, // bottom
-		0,2,3,
-		
-		0,2,4, // left
-		2,4,6,
-
-		2,6,3, // front
-		6,7,3,
-
-		3,7,1, // right
-		7,5,1,
-		
-		0,4,1, // back
-		4,5,1,
-
-		4,5,6, // top
-		5,6,7
 	};
 
 	// first, configure the cube's VAO (and VBO)
 
-	unsigned int VBO, VAO, EBO;
+	unsigned int VBO, cubeVAO;
 
-	// Generate buffers and arrays
-	glGenVertexArrays(1, &VAO);
+	glGenVertexArrays(1, &cubeVAO);
+
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 
-	// Bind VAO
-	glBindVertexArray(VAO);
-
-	// Bind VBO
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// Bind EBO
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBindVertexArray(cubeVAO);
 
-	// Set vertex attribute pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	// position attribute
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+
 	glEnableVertexAttribArray(0);
 
+	// normal attribute
 
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	glEnableVertexAttribArray(1);
 
 	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+
 	unsigned int lightVAO;
+
 	glGenVertexArrays(1, &lightVAO);
+
 	glBindVertexArray(lightVAO);
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
 	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+
 	glEnableVertexAttribArray(0);
 
-
 	// Create camera
+
 	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 0.0, 3.0));
-	glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
+
+	glm::vec3 lightPos(0.0f, 0.0f, 2.0f);
+
 	Shader lightingShader("PhongLight.vs", "PhongLight.fs");
+
 	Shader lampShader("Lamp.vs", "Lamp.fs");
 
 	// render loop
@@ -230,51 +210,60 @@ int main()
 		double currentFrame = glfwGetTime();
 
 		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
 
-		lightPos = glm::vec3(sin(currentFrame) * lampCircleRadius, 0, cos(currentFrame) * lampCircleRadius);
+		lastFrame = currentFrame;
 
 		// input
 
 		processInput(window);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-		// render the cube
 		lightingShader.Use();
+
 		lightingShader.SetVec3("objectColor", 0.5f, 1.0f, 0.31f);
+
 		lightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
+
 		lightingShader.SetVec3("lightPos", lightPos);
+
 		lightingShader.SetVec3("viewPos", pCamera->GetPosition());
+
 		lightingShader.SetMat4("projection", pCamera->GetProjectionMatrix());
+
 		lightingShader.SetMat4("view", pCamera->GetViewMatrix());
-		glm::mat4 model = glm::translate(glm::mat4(1.0), objectPos);
-		if (xrotation || yrotation || zrotation)
-		{
-			model = glm::rotate(model, (float)glm::radians(currentFrame), 
-			glm::vec3(xrotation ? 1.f : 0.f, yrotation ? 1.f : 0.f, zrotation ? 1.f : 0));
-		}
-		model = glm::scale(model, objectScale);
-		model = glm::scale(model, glm::vec3(1, objectHeight, 1));
+
+		glm::mat4 model = glm::scale(glm::mat4(1.0), glm::vec3(3.0f));
+
 		lightingShader.SetMat4("model", model);
 
-		glBindVertexArray(VAO);
+		// render the cube
+
+		glBindVertexArray(cubeVAO);
+
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 		// also draw the lamp object
 
 		lampShader.Use();
+
 		lampShader.SetMat4("projection", pCamera->GetProjectionMatrix());
+
 		lampShader.SetMat4("view", pCamera->GetViewMatrix());
-		model = glm::translate(glm::mat4(1.0f), lightPos);
-		model = glm::scale(model, glm::vec3(0.05f));
+
+		model = glm::translate(glm::mat4(1.0), lightPos);
+
+		model = glm::scale(model, glm::vec3(0.05f)); // a smaller cube
+
 		lampShader.SetMat4("model", model);
 
 		glBindVertexArray(lightVAO);
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
 
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 
@@ -286,7 +275,7 @@ int main()
 
 	Cleanup();
 
-	glDeleteVertexArrays(1, &VAO);
+	glDeleteVertexArrays(1, &cubeVAO);
 
 	glDeleteVertexArrays(1, &lightVAO);
 
@@ -307,30 +296,32 @@ void processInput(GLFWwindow* window)
 {
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+
 		glfwSetWindowShouldClose(window, true);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(FORWARD, (float)deltaTime);
+
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(BACKWARD, (float)deltaTime);
+
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(LEFT, (float)deltaTime);
+
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(RIGHT, (float)deltaTime);
+
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(UP, (float)deltaTime);
+
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+
 		pCamera->ProcessKeyboard(DOWN, (float)deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		objectPos -= glm::vec3(deltaTime, 0, 0);
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		objectPos += glm::vec3(deltaTime, 0, 0);
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		objectPos += glm::vec3(0, deltaTime, 0);
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		objectPos -= glm::vec3(0, deltaTime, 0);
-
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 

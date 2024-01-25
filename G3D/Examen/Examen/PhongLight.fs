@@ -9,10 +9,10 @@ uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 
-uniform float Ka = 0.2f;
-uniform float Kd = 0.3f;
-uniform float Ks = 0.5f;
-uniform float eRs = 128.0f;
+uniform float Ka;
+uniform float Kd;
+uniform float Ks;
+uniform float eRs;
 
 void main()
 {
