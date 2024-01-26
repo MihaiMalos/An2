@@ -277,7 +277,7 @@ void RenderScene(const Shader& shader)
 	model = glm::translate(glm::mat4(1.0), objectPos);
 	if (xrotation || yrotation || zrotation)
 	{
-		model = glm::rotate(model, (float)glm::radians(glfwGetTime()),
+		model = glm::rotate(model, (float)glm::radians(500 * glfwGetTime()),
 				glm::vec3(xrotation ? 1.f : 0.f, yrotation ? 1.f : 0.f, zrotation ? 1.f : 0));
 	}
 	model = glm::scale(model, objectScale);
@@ -299,42 +299,49 @@ unsigned int objectVBO = 0;
 unsigned int objectIBO = 0;
 void RenderObject() 
 {
-	static float width = 5, length = 7, height = 1;
+	static float width = 5, length = 5, height = 1;
 
 	width /= 2.0f;
 	length /= 2.0f;
 	/*height /= 2.0f;*/
 
 	static float vertices[] = {
-		-width,      0,        -length,  0,  1,  0,
-		 width,      0,        -length,  0,  1,  0,
-		-width,      0,         length,  0,  1,  0,
-		 width,      0,         length,  0,  1,  0,
+		-width / 2.0f,         0,   -length,   0, 1, 0,
+		 width / 2.0f,         0,   -length,   0, 1, 0,
+		 width,                0,         0,   0, 1, 0,
+			 0,                0,    length,   0, 1, 0,
+		-width,                0,         0,   0, 1, 0,
 
-		-width,    height,     -length,  0,  1,  0,
-		 width,    height,     -length,	 0,  1,  0,
-		-width,    height,      length,	 0,  1,  0,
-		 width,    height,      length,	 0,  1,  0,
+		-width / 2.0f,    height,   -length,   0, 1, 0,
+		 width / 2.0f,    height,   -length,   0, 1, 0,
+		 width,           height,         0,   0, 1, 0,
+			 0,           height,    length,   0, 1, 0,
+		-width,           height,         0,   0, 1, 0,
 	};
 
 	static unsigned int indices[] = {
-		0,1,3, // bottom
-		0,2,3,
+		4,2,3,
+		0,1,4,
+		4,1,2,
 
-		0,2,4, // left
-		2,4,6,
+		9,7,8,
+		5,6,9,
+		9,6,7,
 
-		2,6,3, // front
-		6,7,3,
+		0,1,5,
+		5,1,6,
 
-		3,7,1, // right
-		7,5,1,
+		2,1,6,
+		6,2,7,
 
-		0,4,1, // back
-		4,5,1,
+		8,3,2,
+		8,2,7,
 
-		4,5,6, // top
-		5,6,7
+		9,8,4,
+		4,8,3,
+
+		4,0,9,
+		9,0,5,
 	};
 
 	if (objectVAO == 0)
