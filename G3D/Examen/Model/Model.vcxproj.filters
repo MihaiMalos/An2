@@ -34,16 +34,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PhongLight.vs">
+    <None Include="ShadowMappingDepth.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Lamp.fs">
+    <None Include="ShadowMapping.fs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Lamp.vs">
+    <None Include="ShadowMapping.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="PhongLight.fs">
+    <None Include="ShadowMappingDepth.fs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
