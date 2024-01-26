@@ -306,50 +306,63 @@ void RenderObject()
 	/*height /= 2.0f;*/
 
 	static float vertices[] = {
-		-width / 2.0f,         0,   -length,   0, 1, 0,
-		 width / 2.0f,         0,   -length,   0, 1, 0,
-		 width,                0,         0,   0, 1, 0,
-		 width / 2.0f,         0,    length,   0, 1, 0,
-		-width / 2.0f,         0,    length,   0, 1, 0,
-		-width,                0,         0,   0, 1, 0,
+		-width / 2.0f,         0,   -length,          0, 1, 0,
+		 width / 2.0f,         0,   -length,          0, 1, 0,
+		 width,                0,   -length / 2.0f,   0, 1, 0,
+		 width,                0,    length / 2.0f,   0, 1, 0,
+		 width / 2.0f,         0,    length,          0, 1, 0,
+		-width / 2.0f,         0,    length,          0, 1, 0,
+		-width,                0,    length / 2.0f,   0, 1, 0,
+		-width,                0,   -length / 2.0f,   0, 1, 0,
 
-		-width / 2.0f,    height,   -length,   0, 1, 0,
-		 width / 2.0f,    height,   -length,   0, 1, 0,
-		 width,           height,         0,   0, 1, 0,
-		 width / 2.0f,    height,    length,   0, 1, 0,
-		-width / 2.0f,    height,    length,   0, 1, 0,
-		-width,           height,         0,   0, 1, 0,
+		-width / 2.0f,    height,   -length,          0, 1, 0,
+		 width / 2.0f,    height,   -length,          0, 1, 0,
+		 width,           height,   -length / 2.0f,   0, 1, 0,
+		 width,           height,    length / 2.0f,   0, 1, 0,
+		 width / 2.0f,    height,    length,          0, 1, 0,
+		-width / 2.0f,    height,    length,          0, 1, 0,
+		-width,           height,    length / 2.0f,   0, 1, 0,
+		-width,           height,   -length / 2.0f,   0, 1, 0,
 	};
 
 	static unsigned int indices[] = {
-		0,1,2,
-		0,2,5,
-		4,2,5,
-		2,3,4,
+		0,1,7,
+		1,7,2,
+		7,3,6,
+		7,3,2,
+		6,3,5,
+		5,3,4,
 
-		6,7,8,
-		6,8,11,
-		10,8,11,
-		8,9,10,
+		8,9,15,
+		9,15,10,
+		15,11,14,
+		15,11,10,
+		14,11,13,
+		13,11,12,
 
-		6,7,0,
-		0,7,1,
+		0,1,8,
+		1,8,9,
 
-		1,2,7,
-		7,2,8,
+		1,2,9,
+		2,9,10,
 
-		8,9,3,
-		3,8,2,
+		2,3,10,
+		3,10,11,
 
-		10,4,9,
-		4,9,3,
+		4,3,12,
+		3,12,11,
 
-		5,4,11,
-		11,4,10,
+		5,4,13,
+		4,13,12,
 
-		0,5,6,
-		5,6,11,
+		6,5,14,
+		5,14,13,
 
+		7,6,15,
+		15,6,14,
+
+		15,8,7,
+		7,8,0,
 	};
 
 	if (objectVAO == 0)
