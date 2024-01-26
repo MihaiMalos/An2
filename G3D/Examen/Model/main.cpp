@@ -309,39 +309,47 @@ void RenderObject()
 		-width / 2.0f,         0,   -length,   0, 1, 0,
 		 width / 2.0f,         0,   -length,   0, 1, 0,
 		 width,                0,         0,   0, 1, 0,
-			 0,                0,    length,   0, 1, 0,
+		 width / 2.0f,         0,    length,   0, 1, 0,
+		-width / 2.0f,         0,    length,   0, 1, 0,
 		-width,                0,         0,   0, 1, 0,
 
 		-width / 2.0f,    height,   -length,   0, 1, 0,
 		 width / 2.0f,    height,   -length,   0, 1, 0,
 		 width,           height,         0,   0, 1, 0,
-			 0,           height,    length,   0, 1, 0,
+		 width / 2.0f,    height,    length,   0, 1, 0,
+		-width / 2.0f,    height,    length,   0, 1, 0,
 		-width,           height,         0,   0, 1, 0,
 	};
 
 	static unsigned int indices[] = {
-		4,2,3,
-		0,1,4,
-		4,1,2,
+		0,1,2,
+		0,2,5,
+		4,2,5,
+		2,3,4,
 
-		9,7,8,
-		5,6,9,
-		9,6,7,
+		6,7,8,
+		6,8,11,
+		10,8,11,
+		8,9,10,
 
-		0,1,5,
-		5,1,6,
+		6,7,0,
+		0,7,1,
 
-		2,1,6,
-		6,2,7,
+		1,2,7,
+		7,2,8,
 
-		8,3,2,
-		8,2,7,
+		8,9,3,
+		3,8,2,
 
-		9,8,4,
-		4,8,3,
+		10,4,9,
+		4,9,3,
 
-		4,0,9,
-		9,0,5,
+		5,4,11,
+		11,4,10,
+
+		0,5,6,
+		5,6,11,
+
 	};
 
 	if (objectVAO == 0)
