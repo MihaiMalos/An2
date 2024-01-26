@@ -306,19 +306,19 @@ void RenderObject()
 	/*height /= 2.0f;*/
 
 	static float vertices[] = {
-		-width / 2.0f,         0,   -length,   0, 1, 0,
-		 width / 2.0f,         0,   -length,   0, 1, 0,
-		 width,                0,         0,   0, 1, 0,
-		 width / 2.0f,         0,    length,   0, 1, 0,
-		-width / 2.0f,         0,    length,   0, 1, 0,
-		-width,                0,         0,   0, 1, 0,
-
-		-width / 2.0f,    height,   -length,   0, 1, 0,
-		 width / 2.0f,    height,   -length,   0, 1, 0,
-		 width,           height,         0,   0, 1, 0,
-		 width / 2.0f,    height,    length,   0, 1, 0,
-		-width / 2.0f,    height,    length,   0, 1, 0,
-		-width,           height,         0,   0, 1, 0,
+		-width / 2.0f,         0,   -length,   0, 1, 0,  1, 0, 0,
+		 width / 2.0f,         0,   -length,   0, 1, 0,  1, 0, 0,
+		 width,                0,         0,   0, 1, 0,  0, 1, 0,
+		 width / 2.0f,         0,    length,   0, 1, 0,  0, 1, 0,
+		-width / 2.0f,         0,    length,   0, 1, 0,  0, 0, 1,
+		-width,                0,         0,   0, 1, 0,  0, 0, 1,
+													     
+		-width / 2.0f,    height,   -length,   0, 1, 0,  1, 0, 0,
+		 width / 2.0f,    height,   -length,   0, 1, 0,  1, 0, 0,
+		 width,           height,         0,   0, 1, 0,  0, 1, 0,
+		 width / 2.0f,    height,    length,   0, 1, 0,  0, 1, 0,
+		-width / 2.0f,    height,    length,   0, 1, 0,  0, 0, 1,
+		-width,           height,         0,   0, 1, 0,  0, 0, 1,
 	};
 
 	static unsigned int indices[] = {
@@ -372,9 +372,11 @@ void RenderObject()
 
 		// Set vertex attribute pointers
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
